@@ -7,5 +7,7 @@ database.init();
 const discord = require('./discord/index');
 discord.startBot();
 
+require('./util/logo/index');
+
 const fs = require('fs');
 if (!fs.existsSync('./uploads/')) fs.mkdirSync('./uploads/');

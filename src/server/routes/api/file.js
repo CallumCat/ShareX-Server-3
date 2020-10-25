@@ -38,7 +38,7 @@ router.get("/api/file/:name", async (req, res) => {
         "views": fileData.views,
         "uploader": fileData.uploader,
         "UploadedAt": fileData.UploadedAt,
-        "lock": fileData.lock,
+        "lock": fileData.lock.active,
     };
 
     fileAPIGET(fileData.name, req.ip);

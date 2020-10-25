@@ -85,7 +85,7 @@ router.post("/api/url", async (req, res) => {
         CreatedAt: new Date()
     });
 
-    let mainURL = config.mainURL || "URL NOT SETUP";
+    let mainURL = userData.domain == undefined || userData.domain == "none" ? config.mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? config.mainURL : `https://${userData.subdomain}.${userData.domain}`);
 
     urlPOST(url, req.ip, key);
 
