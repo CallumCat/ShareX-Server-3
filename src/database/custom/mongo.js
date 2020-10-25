@@ -107,9 +107,8 @@ module.exports.setUserDomain = async (key, domain) => {
 };
 
 module.exports.setUserSubDomain = async (key, subdomain) => {
-  let regex = /([a-z])/g;
-  if (!subdomain.match(regex)) return false;
-
+  // let regex = /([a-z])/g;
+  // if (!subdomain.match(regex)) return false;
   let userData = await this.getUserFromKey(key);
   if (!userData) return null;
   await UserModel.updateOne(userData, { subdomain: subdomain });
