@@ -13,6 +13,9 @@ let run = async (msg, args, owner) => {
         .setColor('#e9172b'));
 
     let domain = args[0];
+    if (domain == userData.domain) return msg.channel.send(new MessageEmbed()
+        .setTitle(`Your domain is already \`${domain}\``)
+        .setColor('#e9172b'));
 
     let success = await setUserDomain(userData.key, domain);
     if (success) return msg.channel.send(new MessageEmbed()
