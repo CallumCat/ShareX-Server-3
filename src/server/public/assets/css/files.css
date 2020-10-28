@@ -1,0 +1,109 @@
+button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+    display: inline;
+}
+
+button {
+    text-decoration: none;
+    color: white;
+    background: #551a8b;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 1%;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    font-size: 18px;
+}
+
+#error {
+    cursor: pointer;
+}
+
+input[type=file] {
+    /* width: 10%; */
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=text] {
+    width: 15%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.custom-file-input {
+    color: #551a8b;
+    background: white;
+    border-radius: 4%;
+}
+
+.fileDiv {
+    padding-right: 4%;
+    padding-left: 4%;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    background: rgb(48, 46, 46);
+    border-radius: 5px;
+    width: 360px;
+}
+
+.fileA {
+    padding: 3%;
+    margin: 2px;
+    background: rgb(78, 77, 77);
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+}
+
+.fileA:hover {
+    color: #000000;
+    cursor: pointer;
+    padding: 4%;
+    transform: translateY(2px);
+}
+
+.delete {
+    margin: 3px;
+    padding: 3%;
+    background: rgb(78, 77, 77);
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+}
+
+.delete:hover {
+    color: #000000;
+    padding: 4%;
+    transform: translateY(2px);
+}
+
+.fileDataDiv {
+    color: white;
+    background: rgb(53, 53, 53)
+}
+
+#fileLink {
+    color: white;
+}
+
+#fileLink:hover {
+    text-decoration: none;
+    color: #000000;
+    transform: translateY(2)
+}

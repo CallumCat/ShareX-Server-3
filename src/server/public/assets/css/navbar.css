@@ -1,4 +1,4 @@
-.topnav {
+#topnav {
     position: fixed;
     top: 0px;
     right: 0px;
@@ -6,7 +6,7 @@
     overflow: hidden;
 }
 
-.topnav a {
+#topnav a {
     float: left;
     color: #f2f2f2;
     text-align: center;
@@ -15,17 +15,17 @@
     font-size: 17px;
 }
 
-.topnav .right {
+#topnav .right {
     float: right
 }
 
-.topnav a:hover {
+#topnav a:hover {
     background-color: #ddd;
     color: black;
     border-radius: 5%;
 }
 
-.topnav a.active {
+#topnav a.active {
     background-color: #551a8b;
     color: white;
     border-radius: 10%;

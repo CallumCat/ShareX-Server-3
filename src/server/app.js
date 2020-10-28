@@ -22,7 +22,7 @@ module.exports.start = () => {
     require('./routes').setup(app);
 
     // 404 message
-    app.get('/*', (req, res) => { return res.status(302).redirect('/404.html'); });
+    app.get('/*', (req, res) => { return res.status(302).redirect('/404'); });
 
     // Start server and log
     app.listen(PORT, () => {

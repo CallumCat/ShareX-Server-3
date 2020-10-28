@@ -26,6 +26,11 @@ module.exports.addFileView = async (fileName) => {
   return true;
 };
 
+module.exports.getAllFiles = async (uploader) => {
+  let fileData = await FileModel.find({ uploader: uploader });
+  return fileData;
+};
+
 module.exports.getFile = async (fileName) => {
   let fileData = await FileModel.findOne({ name: fileName });
   return fileData;

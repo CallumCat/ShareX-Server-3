@@ -5,7 +5,7 @@ const config = require('../../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
-const { getUserFromKey } = require('../../../database/index');
+const { getUserFromKey, getAllFiles } = require('../../../database/index');
 const { userAPIGET } = require('../../../util/logger');
 
 const router = Router();
@@ -19,6 +19,25 @@ const limiter = rateLimit({
     max: 25
 });
 router.use(limiter);
+
+router.get("/api/user/uploads", async (req, res) => {
+    let key = req.headers.key;
+    if (!key) return res.status(401).json({
+        "error": "No key was provided in the headers."
+    });
+
+
+    let userData = await getUserFromKey(key);
+    if (userData == null) return res.status(401).json({
+        "error": "An incorrect key was provided in the headers."
+    });
+
+    let files = await getAllFiles(userData.name);
+
+    userAPIGET(userData.name, userData.key, req.ip);
+
+    return res.status(200).json(files);
+});
 
 router.get("/api/user", async (req, res) => {
     let key = req.headers.key;

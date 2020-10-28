@@ -119,3 +119,4 @@ dist
 #I do not want config nor uploads pushed to github LUL
 config.json
 uploads/
+temp/

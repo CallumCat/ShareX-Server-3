@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Upload</title>
+    <link rel="stylesheet" href="/assets/css/navbar.css" type="text/css">
+    <script src="/assets/scripts/navbar.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/assets/css/default.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/upload.css" type="text/css">
+    <link rel="shortcut icon" href="/assets/favicon.png" />
+    <script src="/assets/scripts/upload.js" type="text/javascript"></script>
+</head>
+
+<body onload="navbar()">
+    <div id="topnav"></div>
+
+    <div class="title">
+        <h2>Upload</h2>
+    </div>
+
+    <div class='filee'>
+        <label for="file">File:</label>
+        <input type="file" id="file" class="custom-file-input" />
+    </div>
+
+    <div>
+        <label for="text">Key:</label>
+        <input type="text" id="key" />
+    </div>
+
+    <div>
+        <button onclick="upload()">Upload</button>
+    </div>
+
+    <a id="error" onclick="copyToClipboard(innerText)"></a>
+
+</body>
+
+</html>
