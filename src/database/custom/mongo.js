@@ -97,9 +97,8 @@ const UserSchema = mongoose.Schema({
 let UserModel = mongoose.model('users', UserSchema);
 
 module.exports.setUserDomain = async (key, domain) => {
-  let regex = /([a-z])/g;
-  if (!domain.match(regex)) return false;
-
+  // let regex = /([a-z])/g;
+  // if (!domain.match(regex)) return false;
   let userData = await this.getUserFromKey(key);
   if (!userData) return null;
   await UserModel.updateOne(userData, { domain: domain });
