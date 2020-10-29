@@ -28,9 +28,20 @@ router.delete("/api/delete/:name", async (req, res) => {
         "error": "File does not exist."
     });
 
-    let key = req.headers.key;
-    if (!key) return res.status(400).json({
-        "error": "No key was provided."
+    let userData;
+    if (req.headers.key) {
+        userData = await getUserFromKey(req.headers.key);
+        if (userData == null) return res.status(401).json({
+            "error": "An incorrect key was provided in the headers."
+        });
+    } else if (req.headers.username && req.headers.password) {
+        let password = sha256(req.headers.password);
+        userData = await getUserFromPassword(req.headers.username, password);
+        if (userData == null) return res.status(401).json({
+            "error": "An incorrect username or password was provided in the headers."
+        });
+    } else return res.status(401).json({
+        "error": "No key nor username or password was provided in the headers."
     });
 
     let userData = await getUserFromKey(key);

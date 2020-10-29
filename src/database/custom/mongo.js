@@ -102,6 +102,7 @@ const UserSchema = mongoose.Schema({
 });
 
 let UserModel = mongoose.model('users', UserSchema);
+module.exports.UserModel = UserModel;
 
 module.exports.setUserDomain = async (key, domain) => {
   // let regex = /([a-z])/g;

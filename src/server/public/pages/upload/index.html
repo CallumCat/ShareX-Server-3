@@ -32,15 +32,9 @@
                                 dvPreview.append(img);
                             }
                             reader.readAsDataURL(file[0]);
-                        } else {
-                            alert(file[0].name + " is not a valid image file.");
-                            dvPreview.html("");
-                            return false;
-                        }
+                        } else return;
                     });
-                } else {
-                    alert("This browser does not support HTML5 FileReader.");
-                }
+                } else return;
             });
         });
     </script>
