@@ -37,11 +37,6 @@ router.get("/api/url/:id", async (req, res) => {
         "error": "No key nor username or password was provided in the headers."
     });
 
-    let userData = await getUserFromKey(key);
-    if (userData == null) return res.status(401).json({
-        "error": "An incorrect key was provided in the headers."
-    });
-
     let urlID = req.params.id;
     if (!urlID) return res.status(400).json({
         "error": "No URL ID provided."
@@ -85,11 +80,6 @@ router.post("/api/url", async (req, res) => {
         });
     } else return res.status(401).json({
         "error": "No key nor username or password was provided in the headers."
-    });
-
-    let userData = await getUserFromKey(key);
-    if (userData == null) return res.status(401).json({
-        "error": "An incorrect key was provided in the headers."
     });
 
     let url = req.body.url;

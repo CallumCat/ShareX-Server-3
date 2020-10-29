@@ -72,11 +72,6 @@ router.get("/api/user", async (req, res) => {
         "error": "No key nor username or password was provided in the headers."
     });
 
-    let userData = await getUserFromKey(key);
-    if (userData == null) return res.status(401).json({
-        "error": "An incorrect key was provided in the headers."
-    });
-
     let returnObj = {
         "key": userData.key,
         "name": userData.name,

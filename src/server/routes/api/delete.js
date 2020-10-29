@@ -43,12 +43,6 @@ router.delete("/api/delete/:name", async (req, res) => {
     } else return res.status(401).json({
         "error": "No key nor username or password was provided in the headers."
     });
-
-    let userData = await getUserFromKey(key);
-    if (userData == null) return res.status(400).json({
-        "error": "An incorrect key was provided."
-    });
-
     if (userData.name !== fileData.uploader) return res.status(400).json({
         "error": "An incorrect key was provided."
     });
