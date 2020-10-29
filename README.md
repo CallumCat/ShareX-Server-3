@@ -72,7 +72,7 @@ Written in around seven weeks so far.
   "RequestMethod": "POST",
   "RequestURL": "https://example.com/api/upload",
   "Headers": {
-    "key": "[KEY CREATED BY DISCORD BOT]"
+    "key": "[KEY]"
   },
   "Body": "MultipartFormData",
   "Arguments": {
@@ -92,7 +92,7 @@ Written in around seven weeks so far.
   "RequestMethod": "POST",
   "RequestURL": "https://example.com/api/url",
   "Headers": {
-    "key": "[KEY CREATED BY DISCORD BOT]"
+    "key": "[KEY]"
   },
   "Body": "MultipartFormData",
   "Arguments": {
