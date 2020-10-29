@@ -64,7 +64,7 @@ function copyToClipboard(str) {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-};
+}
 
 function isJson(str) {
     try {
