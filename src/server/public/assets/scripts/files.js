@@ -1,27 +1,41 @@
 async function getStuff() {
-    let key = document.getElementById("key").value;
-    if (!key) return errorMessage("No key was given.");
+    let username = document.getElementById("username").value;
+    if (!username) return errorMessage("No username was given.");
+
+    let password = document.getElementById("password").value;
+    if (!password) return errorMessage("No password was given.");
 
     let data = await fetch('/api/user/uploads', {
         method: 'GET',
         headers: {
-            'key': key
+            'username': username,
+            'password': password
         }
     });
 
     let dataArray = await data.json();
-
-    dataArray = dataArray.sort((a, b) => a.UploadedAt - b.UploadedAt).reverse();
-
     console.log(dataArray);
+
+    try {
+        dataArray = dataArray.sort((a, b) => a.UploadedAt - b.UploadedAt).reverse();
+    } catch (e) {
+        return errorMessage('An incorrect username or password was provided');
+    }
 
     dataArray.forEach(e => {
         createData(JSON.parse(JSON.stringify(e)));
     });
 
-    document.getElementById('keyPart').setAttribute('hidden', 'true');
+    document.getElementById('UserName').setAttribute('hidden', 'true');
+    document.getElementById('PassWord').setAttribute('hidden', 'true');
     document.getElementById('loginPart').setAttribute('hidden', 'true');
-    document.getElementById("error").setAttribute('hidden', 'true');
+    document.getElementById('error').setAttribute('onclick', '');
+    document.getElementById('error').setAttribute('style', 'corsor: default;');
+
+    if (dataArray.length == 0)
+        goodMessage("You do not have any files uploaded.");
+
+    return;
 }
 
 function createData(data) {
@@ -31,7 +45,7 @@ function createData(data) {
     div.style.marginTop = '2%';
     div.className = 'fileDiv';
     // div.setAttribute('id', `${data.name}Div`);
-    div.innerHTML = `<a onClick="showMoreData('${data.originalName || data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.originalName || data.name}</a><br><br><div id="${data.originalName || data.name}Div" class="fileDataDiv"></div><br><a href="/pages/delete?f=${data.name}" class="delete">Delete</a>`;
+    div.innerHTML = `<a onClick="showMoreData('${data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.originalName || data.name}</a><br><br><div id="${data.name}Div" class="fileDataDiv"></div><br><a href="/pages/delete?f=${data.name}" class="delete">Delete</a>`;
     document.body.appendChild(div);
 }
 
@@ -45,7 +59,7 @@ function showMoreData(name, date, views) {
     div.style.borderRadius = '5px';
     div.style.marginBottom = '10px';
     div.style.width = '340px';
-    div.innerHTML = `<a id="fileDataA" >Uploaded At: ${date}<br>Views: ${views}<br><br>Link: </a><a id="fileLink" href="https://data.terano.dev/files/${name}" id="fileDataA"> Click Here<a>`;
+    div.innerHTML = `<a id="fileDataA" >Uploaded At: ${date}<br>Views: ${views}<br><br>Link: </a><a id="fileLink" href="/files/${name}" id="fileDataA"> Click Here<a>`;
 }
 
 function errorMessage(message) {

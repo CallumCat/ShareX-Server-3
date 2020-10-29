@@ -91,6 +91,7 @@ module.exports.delURL = async (ID) => {
 const UserSchema = mongoose.Schema({
   key: String,
   name: String,
+  password: String,
   owner: Boolean,
   uploads: Number,
   redirects: Number,
@@ -150,6 +151,11 @@ module.exports.getUserFromKey = async (key) => {
 
 module.exports.getUserFromDiscord = async (discord) => {
   let userData = await UserModel.findOne({ discord: discord });
+  return userData;
+};
+
+module.exports.getUserFromPassword = async (username, password) => {
+  let userData = await UserModel.findOne({ name: username, password: password });
   return userData;
 };
 

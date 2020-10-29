@@ -10,8 +10,9 @@ const { Router } = require('express');
 const { existsSync, mkdirSync } = require('fs');
 const path = require('path');
 
-const { getUserFromKey, addUserUpload, saveFile, setUserDomain, setUserSubDomain } = require('../../../database/index');
+const { getUserFromKey, addUserUpload, saveFile, setUserDomain, setUserSubDomain, getUserFromPassword } = require('../../../database/index');
 const { filePOST } = require('../../../util/logger');
+const { sha256 } = require('../../../util/hash');
 
 const router = Router();
 
@@ -48,14 +49,20 @@ let createFileName = (fileExt, loc, FNL) => {
 };
 
 router.post('/api/upload', async (req, res) => {
-    let key = req.headers.key;
-    if (!key) return res.status(400).json({
-        "error": "No key was provided in the headers."
-    });
-
-    let userData = await getUserFromKey(key);
-    if (userData == null) return res.status(400).json({
-        "error": "An incorrect key was provided in the headers."
+    let userData;
+    if (req.headers.key) {
+        userData = await getUserFromKey(req.headers.key);
+        if (userData == null) return res.status(401).json({
+            "error": "An incorrect key was provided in the headers."
+        });
+    } else if (req.headers.username && req.headers.password) {
+        let password = sha256(req.headers.password);
+        userData = await getUserFromPassword(req.headers.username, password);
+        if (userData == null) return res.status(401).json({
+            "error": "An incorrect username or password was provided in the headers."
+        });
+    } else return res.status(401).json({
+        "error": "No key nor username or password was provided in the headers."
     });
 
     if (!req.files || !req.files.file) return res.status(400).json({
@@ -101,9 +108,9 @@ router.post('/api/upload', async (req, res) => {
         let mainURL = userData.domain == undefined || userData.domain == "none" ? config.mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? config.mainURL : `https://${userData.subdomain}.${userData.domain}`);
         let url = mainURL + '/files/' + name;
 
-        await addUserUpload(key);
+        await addUserUpload(userData.key);
 
-        filePOST(name, req.ip, key);
+        filePOST(name, req.ip, userData.key);
 
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).end(url);

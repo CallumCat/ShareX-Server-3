@@ -50,6 +50,18 @@ module.exports.userAPIGET = async (name, key, ip) => {
   console.log(msg);
 };
 
+module.exports.userAPIGETUPLOADS = async (name, key, ip) => {
+  ip = await parseIP(ip);
+  let msg = `${'[GET]'.cyan} ${'SENT USER UPLOADS'.bgMagenta.black} ${name.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
+  console.log(msg);
+};
+
+module.exports.userAPIPOST = async (name, key, ip) => {
+  ip = await parseIP(ip);
+  let msg = `${'[GET]'.cyan} ${'CREATED NEW USER'.bgMagenta.black} ${name.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
+  console.log(msg);
+};
+
 let parseIP = async (ip) => {
   return ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
 };

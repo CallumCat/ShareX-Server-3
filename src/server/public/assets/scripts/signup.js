@@ -1,42 +1,46 @@
-let oldFile;
-
-async function upload() {
-    const fileField = document.querySelector('input[type="file"]');
-    if (!fileField.files[0]) return errorMessage("No file was chosen.");
-
-    if (oldFile == fileField.files[0]) return errorMessage("That file was already uploaded.");
-    oldFile = fileField.files[0];
-
-
+async function getStuff() {
     let username = document.getElementById("username").value;
     if (!username) return errorMessage("No username was given.");
 
     let password = document.getElementById("password").value;
     if (!password) return errorMessage("No password was given.");
 
-    const formData = new FormData();
-    formData.append('file', fileField.files[0]);
-
-    let data = await fetch('/api/upload', {
+    let data = await fetch('/api/user', {
         method: 'POST',
-        body: formData,
         headers: {
-            'username': username,
+            'name': username,
             'password': password
         }
     });
 
-    let url = await data.text();
+    data = await data.json();
 
-    if (isJson(url)) {
-        errorMessage(JSON.parse(url).error);
-    } else {
-        goodMessage(url);
-        copyToClipboard(url);
-    }
+    if (data.error) return errorMessage(data.error);
 
     document.getElementById('UserName').setAttribute('hidden', 'true');
     document.getElementById('PassWord').setAttribute('hidden', 'true');
+    document.getElementById('loginPart').setAttribute('hidden', 'true');
+
+    let div = document.getElementById('results');
+    div.style.width = "420px";
+    div.style.height = "125px";
+    div.style.paddingRight = "3%";
+    div.style.paddingLeft = "3%";
+    div.style.paddingBottom = ".5%";
+    div.style.paddingTop = ".5%";
+    // div.setAttribute('hidden', 'false');
+    div.innerHTML = `<br>
+    <div id=name>
+        <a class="resultA">Name: ${data.name}</a>
+    </div>
+    <br><br>
+    <div id=key>
+        <a class="resultA">Key: ${data.key}</a>
+    </div>`;
+    // <div id=date>
+    //     <a class="resultA">Created At: ${data.CreatedAt}</a>
+    // </div>;
+    goodMessage("Copy your key so you can upload with it.");
     return;
 }
 

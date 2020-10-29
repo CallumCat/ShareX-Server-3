@@ -31,16 +31,37 @@ button:hover {
 }
 
 input[type=file] {
-    /* width: 10%; */
+    background-color: #551a8b;
+    width: 300px;
     padding: 12px 20px;
     margin: 8px 0;
+    border: none;
+    border-radius: 5px;
     box-sizing: border-box;
+    color: white;
 }
 
 input[type=text] {
-    width: 15%;
+    background-color: #551a8b;
+    border: none;
+    border-radius: 5px;
+    width: 190px;
+    height: 50%;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 4px 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+input[type=password] {
+    background-color: #551a8b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 190px;
+    height: 50%;
+    padding: 12px 20px;
+    margin: 4px 0;
     box-sizing: border-box;
 }
 
@@ -48,8 +69,19 @@ input[type=text] {
     visibility: hidden;
 }
 
-.custom-file-input {
-    color: #551a8b;
-    background: white;
-    border-radius: 4%;
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgb(204, 204, 204);
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: rgb(204, 204, 204);
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: rgb(204, 204, 204);
 }
