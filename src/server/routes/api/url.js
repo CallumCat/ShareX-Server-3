@@ -99,7 +99,7 @@ router.post("/api/url", async (req, res) => {
 
     let mainURL = userData.domain == undefined || userData.domain == "none" ? config.mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? config.mainURL : `https://${userData.subdomain}.${userData.domain}`);
 
-    urlPOST(url, req.ip, key);
+    urlPOST(url, req.ip, userData.key);
 
     res.setHeader('Content-Type', 'application/json');
     return res.status(200).end(mainURL + '/url/' + redirectNum);

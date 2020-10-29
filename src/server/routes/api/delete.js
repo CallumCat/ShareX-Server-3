@@ -53,7 +53,7 @@ router.delete("/api/delete/:name", async (req, res) => {
         if (err) throw err;
     });
 
-    fileDELETE(fileData.name, req.ip, key);
+    fileDELETE(fileData.name, req.ip, userData.key);
 
     return res.status(400).json({
         "success": true,
