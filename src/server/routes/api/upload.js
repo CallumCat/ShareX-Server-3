@@ -86,6 +86,7 @@ router.post('/api/upload', async (req, res) => {
         let lockPassword = req.body.password || 'none';
 
         await saveFile({
+            originalName: req.files.file.name,
             uploader: location,
             path: uploadPath,
             name: name,

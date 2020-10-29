@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 //------------------------------------------------------------
 
 const FileSchema = mongoose.Schema({
+  originalName: String,
   name: String,
   path: String,
   views: Number,

@@ -31,7 +31,7 @@ function createData(data) {
     div.style.marginTop = '2%';
     div.className = 'fileDiv';
     // div.setAttribute('id', `${data.name}Div`);
-    div.innerHTML = `<a onClick="showMoreData('${data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.name}</a><br><br><div id="${data.name}Div" class="fileDataDiv"></div><br><a href="/pages/delete?f=${data.name}" class="delete">Delete</a>`;
+    div.innerHTML = `<a onClick="showMoreData('${data.originalName || data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.originalName || data.name}</a><br><br><div id="${data.originalName || data.name}Div" class="fileDataDiv"></div><br><a href="/pages/delete?f=${data.name}" class="delete">Delete</a>`;
     document.body.appendChild(div);
 }
 

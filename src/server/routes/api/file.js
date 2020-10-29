@@ -32,7 +32,7 @@ router.get("/api/file/:name", async (req, res) => {
     });
 
     let returnObj = {
-        "name": fileData.name,
+        "name": fileData.originalName,
         "path": fileData.path,
         "link": `${config.mainURL}/files/${fileData.name}`,
         "views": fileData.views,
