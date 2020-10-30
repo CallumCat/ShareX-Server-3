@@ -22,6 +22,5 @@ const png = async (_pngPath) => {
   writeFileSync(_pngPath, canvas.toBuffer());
 };
 functionMap.set('png', png);
-png('uploads/million/2020/10/30/1cp9dluwn3n.png');
 
 module.exports = functionMap;
