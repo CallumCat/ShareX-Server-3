@@ -1,20 +1,17 @@
-// For logging
-const logger = require('./logger.js');
+const functionMap = new Map();
 
-const Canvas = require('canvas');
-const path = require('path');
+const { loadImage, createCanvas } = require('canvas');
+const { resolve } = require('path');
 const { writeFileSync, existsSync } = require('fs');
 
-// Create the Map
-const functionMap = new Map();
 
 // Example function
 const png = async (_pngPath) => {
   if (Math.floor(Math.random() * 100) !== 69) return;
-  _pngPath = path.resolve(__dirname + '../../../' + _pngPath);
+  _pngPath = resolve(__dirname + '../../../' + _pngPath);
   if (!existsSync(_pngPath)) return;
-  let image = await Canvas.loadImage(_pngPath);
-  let canvas = Canvas.createCanvas(image.height, image.width);
+  let image = await loadImage(_pngPath);
+  let canvas = createCanvas(image.height, image.width);
   let ctx = canvas.getContext('2d');
   ctx.translate(image.height, 0);
   ctx.rotate(Math.PI / 2);

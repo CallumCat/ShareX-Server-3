@@ -28,12 +28,12 @@ module.exports.addFileView = async (fileName) => {
 };
 
 module.exports.getAllFiles = async (uploader) => {
-  let fileData = await FileModel.find({ uploader: uploader });
+  let fileData = await FileModel.find({ uploader: uploader }).lean();
   return fileData;
 };
 
 module.exports.getFile = async (fileName) => {
-  let fileData = await FileModel.findOne({ name: fileName });
+  let fileData = await FileModel.findOne({ name: fileName }).lean();
   return fileData;
 };
 
@@ -70,7 +70,7 @@ module.exports.addURLView = async (ID) => {
 };
 
 module.exports.getURL = async (ID) => {
-  let URLData = await URLModel.findOne({ id: ID });
+  let URLData = await URLModel.findOne({ id: ID }).lean();
   return URLData;
 };
 
@@ -146,37 +146,37 @@ module.exports.setUserDiscord = async (key, discord) => {
 };
 
 module.exports.getUserFromKey = async (key) => {
-  let userData = await UserModel.findOne({ key: key });
+  let userData = await UserModel.findOne({ key: key }).lean();
   return userData;
 };
 
 module.exports.getUserFromDiscord = async (discord) => {
-  let userData = await UserModel.findOne({ discord: discord });
+  let userData = await UserModel.findOne({ discord: discord }).lean();
   return userData;
 };
 
 module.exports.getUserFromPassword = async (username, password) => {
-  let userData = await UserModel.findOne({ name: username, password: password });
+  let userData = await UserModel.findOne({ name: username, password: password }).lean();
   return userData;
 };
 
 module.exports.getUserFromSubDomain = async (subdomain) => {
-  let userData = await UserModel.findOne({ subdomain: subdomain });
+  let userData = await UserModel.findOne({ subdomain: subdomain }).lean();
   return userData;
 };
 
 module.exports.getUserFromName = async (name) => {
-  let userData = await UserModel.findOne({ name: name });
+  let userData = await UserModel.findOne({ name: name }).lean();
   return userData;
 };
 
 module.exports.getAllUsers = async () => {
-  let userData = await UserModel.find();
+  let userData = await UserModel.find().lean();
   return userData;
 };
 
 module.exports.saveUser = async (data) => {
-  let userData = await UserModel.create(data);
+  let userData = await UserModel.create(data).lean();
   return userData;
 };
 
