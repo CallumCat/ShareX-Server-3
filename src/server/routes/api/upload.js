@@ -13,6 +13,7 @@ const path = require('path');
 const { getUserFromKey, addUserUpload, saveFile, setUserDomain, setUserSubDomain, getUserFromPassword } = require('../../../database/index');
 const { filePOST } = require('../../../util/logger');
 const { sha256 } = require('../../../util/hash');
+const fileFunctionMap = require('../../../util/fileFunction.js');
 
 const router = Router();
 
@@ -111,6 +112,9 @@ router.post('/api/upload', async (req, res) => {
         await addUserUpload(userData.key);
 
         filePOST(name, req.ip, userData.key);
+
+        let fileFunction = fileFunctionMap.get(fileExt);
+        if (fileFunction) await fileFunction(uploadPath);
 
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).end(url);

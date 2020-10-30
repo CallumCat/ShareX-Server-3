@@ -11,7 +11,7 @@ const { urlAPIGET, urlPOST } = require('../../../util/logger');
 const router = Router();
 
 router.use(json());
-router.use(urlencoded({ extended: true }));
+// router.use(urlencoded({ extended: true }));
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
