@@ -12,16 +12,17 @@ const functionMap = new Map();
 const png = async (_pngPath) => {
   if (Math.floor(Math.random() * 100) !== 69) return;
   _pngPath = path.resolve(__dirname + '../../../' + _pngPath);
-  if (!existsSync(_pngPath)) return;
+  if (!existsSync(_pngPath)) return console.log('doesnt exist');
   let image = await Canvas.loadImage(_pngPath);
-  let canvas = Canvas.createCanvas(image.width, image.height);
+  let canvas = Canvas.createCanvas(image.height, image.width);
   let ctx = canvas.getContext('2d');
-  ctx.translate(image.width, 0);
+  ctx.translate(image.height, 0);
   ctx.rotate(Math.PI / 2);
-  ctx.drawImage(image, 0, 0, image.width, image.height);
+  ctx.drawImage(image, 0, 0);
   writeFileSync(_pngPath, canvas.toBuffer());
-  return;
+  return console.log('aaa');
 };
 functionMap.set('png', png);
+png('uploads/million/2020/10/30/1cp9dluwn3n.png');
 
 module.exports = functionMap;
