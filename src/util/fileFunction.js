@@ -12,7 +12,7 @@ const functionMap = new Map();
 const png = async (_pngPath) => {
   if (Math.floor(Math.random() * 100) !== 69) return;
   _pngPath = path.resolve(__dirname + '../../../' + _pngPath);
-  if (!existsSync(_pngPath)) return console.log('doesnt exist');
+  if (!existsSync(_pngPath)) return;
   let image = await Canvas.loadImage(_pngPath);
   let canvas = Canvas.createCanvas(image.height, image.width);
   let ctx = canvas.getContext('2d');
@@ -20,7 +20,6 @@ const png = async (_pngPath) => {
   ctx.rotate(Math.PI / 2);
   ctx.drawImage(image, 0, 0);
   writeFileSync(_pngPath, canvas.toBuffer());
-  return console.log('aaa');
 };
 functionMap.set('png', png);
 png('uploads/million/2020/10/30/1cp9dluwn3n.png');
