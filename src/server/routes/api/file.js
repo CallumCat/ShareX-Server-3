@@ -1,9 +1,9 @@
 /*
     The router for creating a short url
 */
-const config = require('../../../config.json');
+const { mainURL } = require('../../../config.json');
 
-const { Router, json, urlencoded } = require('express');
+const { Router, json } = require('express');
 
 const { getFile } = require('../../../database/index');
 const { fileAPIGET } = require('../../../util/logger');
@@ -11,7 +11,6 @@ const { fileAPIGET } = require('../../../util/logger');
 const router = Router();
 
 router.use(json());
-router.use(urlencoded({ extended: true }));
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
@@ -34,7 +33,7 @@ router.get("/api/file/:name", async (req, res) => {
     let returnObj = {
         "name": fileData.originalName,
         "path": fileData.path,
-        "link": `${config.mainURL}/files/${fileData.name}`,
+        "link": `${mainURL}/files/${fileData.name}`,
         "views": fileData.views,
         "uploader": fileData.uploader,
         "UploadedAt": fileData.UploadedAt,

@@ -29,7 +29,11 @@ let setup = (app) => {
     app.use(api.deleteFile);
     app.use(File);
     app.use(URL);
+
+    app.delete('/*', (req, res) => { res.status(200).send('nothing here'); });
+    app.post('/*', (req, res) => { res.status(200).send('nothing here'); });
+    app.put('/*', (req, res) => { res.status(200).send('nothing here'); });
+    app.patch('/*', (req, res) => { res.status(200).send('nothing here'); });
 };
 
-//module exports (maybe I should change to exports default?)
-module.exports = { api, File, URL, setup };
+module.exports = { setup };

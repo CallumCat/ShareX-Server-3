@@ -9,12 +9,18 @@ const colors = require('colors');
 
 const express = require('express');
 
+// Require Middleware
+const compression = require('compression');
+
 module.exports.start = () => {
     // Create the server
     let app = express();
+    app.disable('x-powered-by');
+    app.set('trust proxy', true);
 
     // Middleware
-    app.set('trust proxy', true);
+    if (config.debug) app.use(require('morgan')('dev'));
+    app.use(compression());
     app.use(express.static(__dirname + '/public/'));
     app.use(express.static(__dirname + '/uploads/'));
 

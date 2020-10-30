@@ -1,9 +1,9 @@
 /*
     The router for creating a short url
 */
-const config = require('../../../config.json');
+const { mainURL } = require('../../../config.json');
 
-const { Router, json, urlencoded } = require('express');
+const { Router, json } = require('express');
 
 const { saveURL, getURL, getUserFromKey } = require('../../../database/index');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
@@ -11,7 +11,6 @@ const { urlAPIGET, urlPOST } = require('../../../util/logger');
 const router = Router();
 
 router.use(json());
-// router.use(urlencoded({ extended: true }));
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
@@ -53,7 +52,7 @@ router.get("/api/url/:id", async (req, res) => {
 
     let returnObj = {
         "id": urlData.id,
-        "link": `${config.mainURL}/url/${urlData.id}`,
+        "link": `${mainURL}/url/${urlData.id}`,
         "views": urlData.views,
         "uploader": urlData.uploader,
         "redirect": urlData.redirect,
@@ -97,12 +96,12 @@ router.post("/api/url", async (req, res) => {
         CreatedAt: new Date()
     });
 
-    let mainURL = userData.domain == undefined || userData.domain == "none" ? config.mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? config.mainURL : `https://${userData.subdomain}.${userData.domain}`);
+    let urlPart = userData.domain == undefined || userData.domain == "none" ? mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? mainURL : `https://${userData.subdomain}.${userData.domain}`);
 
     urlPOST(url, req.ip, userData.key);
 
     res.setHeader('Content-Type', 'application/json');
-    return res.status(200).end(mainURL + '/url/' + redirectNum);
+    return res.status(200).end(urlPart + '/url/' + redirectNum);
 });
 
 let CreateUrl = async (length) => {

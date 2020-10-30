@@ -1,16 +1,13 @@
 /* 
     The router for uploading a file
 */
-const config = require('../../../config.json');
-
-const words = require('../../../util/words.json');
-const colors = require('colors');
+const { mainURL, maxFileSize } = require('../../../config.json');
 
 const { Router } = require('express');
-const { existsSync, mkdirSync } = require('fs');
-const path = require('path');
+const { existsSync, mkdir } = require('fs');
+const { resolve } = require('path');
 
-const { getUserFromKey, addUserUpload, saveFile, setUserDomain, setUserSubDomain, getUserFromPassword } = require('../../../database/index');
+const { getUserFromKey, addUserUpload, saveFile, getUserFromPassword } = require('../../../database/index');
 const { filePOST } = require('../../../util/logger');
 const { sha256 } = require('../../../util/hash');
 const fileFunctionMap = require('../../../util/fileFunction.js');
@@ -29,23 +26,16 @@ router.use(fileUpload({
     safeFileNames: true,
     preserveExtension: 7,
     useTempFiles: true,
-    tempFileDir: path.resolve(__dirname + '../../../temp/'),
+    tempFileDir: resolve(__dirname + '../../../temp/'),
     limits: {
-        fileSize: config.maxFileSize || 9007199254740991
+        fileSize: maxFileSize || 9007199254740991
     }
 }));
 
-let toUpperCaseLetter = (word) => {
-    let output = word.charAt(0).toUpperCase() + word.slice(1);
-    return output;
-};
-
-let createFileName = (fileExt, loc, FNL) => {
-    if (typeof FNL !== 'number') throw new Error('File name length is not a number.');
-
+const createFileName = (fileExt, loc) => {
     let nFN = Math.floor(Math.random() * 9007199254740991).toString(36) + '.' + fileExt;
     let fileLocation = `./uploads/${loc}/${nFN}.${fileExt}`;
-    if (existsSync(fileLocation)) return createFileName(fileExt, loc, FNL);
+    if (existsSync(fileLocation)) return createFileName(fileExt, loc);
     return nFN;
 };
 
@@ -70,22 +60,20 @@ router.post('/api/upload', async (req, res) => {
         "error": "No file was uploaded."
     });
 
-    let FNL = parseInt(req.body.fnl) || 6;
-
     let location = userData.name;
     let fileName = req.files.file.name.split('.');
     let fileExt = fileName[fileName.length - 1];
-    let name = createFileName(fileExt, location, FNL);
+    let name = createFileName(fileExt, location);
+
     let date = new Date();
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
+
     let uploadPath = `uploads/${location}/${year}/${month}/${day}/${name}`;
 
-    if (!existsSync(`./uploads/${location}`)) mkdirSync(`./uploads/${location}`);
-    if (!existsSync(`./uploads/${location}/${year}`)) mkdirSync(`./uploads/${location}/${year}`);
-    if (!existsSync(`./uploads/${location}/${year}/${month}`)) mkdirSync(`./uploads/${location}/${year}/${month}`);
-    if (!existsSync(`./uploads/${location}/${year}/${month}/${day}`)) mkdirSync(`./uploads/${location}/${year}/${month}/${day}`);
+    if (!existsSync(`./uploads/${location}/${year}/${month}/${day}`))
+        mkdir(`./uploads/${location}/${year}/${month}/${day}`, { recursive: true });
 
     req.files.file.mv(uploadPath, async (err) => {
         if (err) return res.status(500).send(err);
@@ -106,18 +94,19 @@ router.post('/api/upload', async (req, res) => {
             }
         });
 
-        let mainURL = userData.domain == undefined || userData.domain == "none" ? config.mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? config.mainURL : `https://${userData.subdomain}.${userData.domain}`);
-        let url = mainURL + '/files/' + name;
-
-        await addUserUpload(userData.key);
+        let linkPart = userData.domain == undefined || userData.domain == "none" ? mainURL : (userData.subdomain == undefined || userData.subdomain == "none" ? mainURL : `https://${userData.subdomain}.${userData.domain}`);
+        let url = linkPart + '/files/' + name;
 
         filePOST(name, req.ip, userData.key);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).end(url);
 
         let fileFunction = fileFunctionMap.get(fileExt);
         if (fileFunction) await fileFunction(uploadPath);
 
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(200).end(url);
+        await addUserUpload(userData.key);
+        return;
     });
 });
 

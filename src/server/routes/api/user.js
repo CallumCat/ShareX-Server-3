@@ -1,9 +1,8 @@
 /*
 The router for creating a short url
 */
-const config = require('../../../config.json');
 
-const { Router, json, urlencoded } = require('express');
+const { Router, json } = require('express');
 
 const { getUserFromKey, getAllFiles, saveUser, getUserFromName, getUserFromPassword } = require('../../../database/index');
 const { userAPIGET, userAPIPOST, userAPIGETUPLOADS } = require('../../../util/logger');
@@ -12,7 +11,6 @@ const { sha256 } = require('../../../util/hash');
 const router = Router();
 
 router.use(json());
-router.use(urlencoded({ extended: true }));
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
@@ -31,7 +29,6 @@ const createKey = async () => {
 };
 
 router.get("/api/user/uploads", async (req, res) => {
-
     let userData;
     if (req.headers.key) {
         userData = await getUserFromKey(req.headers.key);
