@@ -29,12 +29,13 @@ async function getStuff() {
     document.getElementById('UserName').setAttribute('hidden', 'true');
     document.getElementById('PassWord').setAttribute('hidden', 'true');
     document.getElementById('loginPart').setAttribute('hidden', 'true');
+    document.getElementById('yes').setAttribute('hidden', 'true');
     document.getElementById('error').setAttribute('onclick', '');
     document.getElementById('error').setAttribute('style', 'corsor: default;');
 
     if (dataArray.length == 0)
         goodMessage("You do not have any files uploaded.");
-
+    else document.getElementById('error').setAttribute('hidden', 'true');
     return;
 }
 
