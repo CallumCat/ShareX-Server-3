@@ -4,7 +4,7 @@
 const { mainURL, maxFileSize } = require('../../../config.json');
 
 const { Router } = require('express');
-const { existsSync, mkdir } = require('fs');
+const { existsSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 
 const { getUserFromKey, addUserUpload, saveFile, getUserFromPassword } = require('../../../database/index');
@@ -73,7 +73,7 @@ router.post('/api/upload', async (req, res) => {
     let uploadPath = `uploads/${location}/${year}/${month}/${day}/${name}`;
 
     if (!existsSync(`./uploads/${location}/${year}/${month}/${day}`))
-        mkdir(`./uploads/${location}/${year}/${month}/${day}`, { recursive: true });
+        mkdirSync(`./uploads/${location}/${year}/${month}/${day}`, { recursive: true });
 
     req.files.file.mv(uploadPath, async (err) => {
         if (err) return res.status(500).send(err);
