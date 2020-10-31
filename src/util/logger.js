@@ -1,6 +1,4 @@
-const colors = require('colors');
-
-const database = require('../database/index');
+require('colors');
 
 module.exports.urlGET = async (ip, redirect) => {
   ip = await parseIP(ip);
@@ -62,6 +60,4 @@ module.exports.userAPIPOST = async (name, key, ip) => {
   console.log(msg);
 };
 
-let parseIP = async (ip) => {
-  return ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
-};
+let parseIP = async ip => ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');

@@ -1,5 +1,5 @@
 function navbar() {
-    let topnav = document.getElementById("topnav");
+    let topnav = document.getElementById('topnav');
     topnav.innerHTML = `<a class="active" href="/">Home</a>
     <a href="https://netdata.terano.dev">Netdata</a>
     <a href="/pages/upload">Upload</a>

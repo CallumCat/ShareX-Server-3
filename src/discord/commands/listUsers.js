@@ -6,29 +6,31 @@ let name = 'listusers';
 let aliases = ['lu', 'ls'];
 let permissions = 100;
 let run = async (msg, args, owner) => {
-    if (!owner) return msg.channel.send(new MessageEmbed()
-        .setTitle(`You do not have the required permissions to run this command.`)
-        .setColor('#e9172b'));
+  if (!owner) {
+    return msg.channel.send(new MessageEmbed()
+      .setTitle('You do not have the required permissions to run this command.')
+      .setColor('#e9172b'));
+  }
 
-    let data = await getAllUsers();
+  let data = await getAllUsers();
 
-    let embed = new MessageEmbed()
-        .setTitle("Users")
-        .setColor('#1eda61');
+  let embed = new MessageEmbed()
+    .setTitle('Users')
+    .setColor('#1eda61');
 
-    let dataArray = [];
+  let dataArray = [];
 
-    data.forEach(e => {
-        dataArray.push('`' + e.name + '`');
-    });
+  data.forEach(e => {
+    dataArray.push(`\`${e.name}\``);
+  });
 
-    if (dataArray.join(', ').length > 2048) {
-        embed.setDescription('Embed\'s description would exceed 2048 characters.');
-        return msg.channel.send(embed);
-    }
-
-    embed.setDescription(dataArray.join(', '));
+  if (dataArray.join(', ').length > 2048) {
+    embed.setDescription('Embed\'s description would exceed 2048 characters.');
     return msg.channel.send(embed);
+  }
+
+  embed.setDescription(dataArray.join(', '));
+  return msg.channel.send(embed);
 };
 
 module.exports = { name, aliases, run, permissions };

@@ -1,9 +1,9 @@
 async function getStuff() {
-    let username = document.getElementById("username").value;
-    if (!username) return errorMessage("No username was given.");
+    let username = document.getElementById('username').value;
+    if (!username) return errorMessage('No username was given.');
 
-    let password = document.getElementById("password").value;
-    if (!password) return errorMessage("No password was given.");
+    let password = document.getElementById('password').value;
+    if (!password) return errorMessage('No password was given.');
 
     let data = await fetch('/api/user/uploads', {
         method: 'GET',
@@ -33,14 +33,14 @@ async function getStuff() {
     document.getElementById('error').setAttribute('onclick', '');
     document.getElementById('error').setAttribute('style', 'corsor: default;');
 
-    if (dataArray.length == 0)
-        goodMessage("You do not have any files uploaded.");
+    if (dataArray.length === 0)
+        goodMessage('You do not have any files uploaded.');
     else document.getElementById('error').setAttribute('hidden', 'true');
     return;
 }
 
 function createData(data) {
-    var div = document.createElement("div");
+    var div = document.createElement('div');
     div.style.margin = 'auto';
     div.style.padding = '3%';
     div.style.marginTop = '2%';
@@ -64,16 +64,16 @@ function showMoreData(name, date, views) {
 }
 
 function errorMessage(message) {
-    let error = document.getElementById("error");
+    let error = document.getElementById('error');
     error.textContent = message;
-    error.style.color = "red";
+    error.style.color = 'red';
 }
 
 function goodMessage(message) {
-    let error = document.getElementById("error");
+    let error = document.getElementById('error');
     error.textContent = message.toString();
     error.onclick = copyToClipboard(error.innerText);
-    error.style.color = "green";
+    error.style.color = 'green';
 }
 
 function copyToClipboard(str) {

@@ -6,9 +6,9 @@ const { writeFileSync, existsSync } = require('fs');
 
 
 // Example function
-const png = async (_pngPath) => {
+const png = async _pngPath => {
   if (Math.floor(Math.random() * 100) > 13) return;
-  _pngPath = resolve(__dirname + '../../../' + _pngPath);
+  _pngPath = resolve(`${__dirname}../../../${_pngPath}`);
   if (!existsSync(_pngPath)) return;
   let image = await loadImage(_pngPath);
   let canvas = createCanvas(image.height, image.width);

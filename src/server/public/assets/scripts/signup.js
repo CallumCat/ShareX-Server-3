@@ -1,9 +1,9 @@
 async function getStuff() {
-    let username = document.getElementById("username").value;
-    if (!username) return errorMessage("No username was given.");
+    let username = document.getElementById('username').value;
+    if (!username) return errorMessage('No username was given.');
 
-    let password = document.getElementById("password").value;
-    if (!password) return errorMessage("No password was given.");
+    let password = document.getElementById('password').value;
+    if (!password) return errorMessage('No password was given.');
 
     let data = await fetch('/api/user', {
         method: 'POST',
@@ -22,12 +22,12 @@ async function getStuff() {
     document.getElementById('loginPart').setAttribute('hidden', 'true');
 
     let div = document.getElementById('results');
-    div.style.width = "420px";
-    div.style.height = "125px";
-    div.style.paddingRight = "3%";
-    div.style.paddingLeft = "3%";
-    div.style.paddingBottom = ".5%";
-    div.style.paddingTop = ".5%";
+    div.style.width = '420px';
+    div.style.height = '125px';
+    div.style.paddingRight = '3%';
+    div.style.paddingLeft = '3%';
+    div.style.paddingBottom = '.5%';
+    div.style.paddingTop = '.5%';
     // div.setAttribute('hidden', 'false');
     div.innerHTML = `<br>
     <div id=name>
@@ -40,21 +40,21 @@ async function getStuff() {
     // <div id=date>
     //     <a class="resultA">Created At: ${data.CreatedAt}</a>
     // </div>;
-    goodMessage("Copy your key so you can upload with it.");
+    goodMessage('Copy your key so you can upload with it.');
     return;
 }
 
 function errorMessage(message) {
-    let error = document.getElementById("error");
+    let error = document.getElementById('error');
     error.textContent = message.toString();
-    error.style.color = "red";
+    error.style.color = 'red';
 }
 
 function goodMessage(message) {
-    let error = document.getElementById("error");
+    let error = document.getElementById('error');
     error.textContent = message.toString();
     error.onclick = copyToClipboard(error.innerText);
-    error.style.color = "green";
+    error.style.color = 'green';
 }
 
 function copyToClipboard(str) {
