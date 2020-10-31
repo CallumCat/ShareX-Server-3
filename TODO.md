@@ -4,8 +4,6 @@
 
 2. Add rethinkdb
 
-3. Add file functions .map(fileExt)
+3. Better css / finish frontend
 
-4. Better css / finish frontend
-
-5. Edit discord bot
+4. Edit discord bot
