@@ -4,8 +4,9 @@
 const config = require('../config.json');
 let PORT = config.port || 1234;
 
-// Fancy colors
+// Fancy stuff
 const colors = require('colors');
+const path = require('path');
 
 const express = require('express');
 
@@ -28,7 +29,7 @@ module.exports.start = () => {
     require('./routes').setup(app);
 
     // 404 message
-    app.get('/*', (req, res) => { return res.status(302).redirect('/404'); });
+    app.get('/*', (req, res) => { return res.status(404).sendFile(path.resolve('src/server/public/404/index.html')); });
 
     // Start server and log
     app.listen(PORT, () => {

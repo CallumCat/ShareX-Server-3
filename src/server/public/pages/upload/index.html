@@ -45,18 +45,19 @@
         <h2>Upload</h2>
     </div>
 
-    <div class='filee'>
-        <input type="file" id="file" class="custom-file-input" />
-    </div>
-    <div id=UserName>
-        <input placeholder="Username" autocomplete="off" type="text" id="username" />
-    </div>
-    <div id=PassWord>
-        <input placeholder="Password" type="password" id="password" />
-    </div>
-
-    <div>
-        <button onclick="upload()">Upload</button>
+    <div class="orange">
+        <div class='filee'>
+            <input type="file" id="file" class="custom-file-input" />
+        </div>
+        <div id=UserName>
+            <input placeholder="Username" autocomplete="off" type="text" id="username" />
+        </div>
+        <div id=PassWord>
+            <input placeholder="Password" type="password" id="password" />
+        </div>
+        <div>
+            <button onclick="upload()">Upload</button>
+        </div>
     </div>
 
     <a id="error" onclick="copyToClipboard(innerText)"></a>
