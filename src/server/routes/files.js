@@ -12,8 +12,8 @@ const router = Router();
 
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
-    windowMs: 1 * 60 * 1000,
-    max: 15
+    windowMs: 4 * 60 * 1000,
+    max: 200
 });
 router.use(limiter);
 

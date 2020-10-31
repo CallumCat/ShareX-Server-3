@@ -60,7 +60,7 @@ function showMoreData(name, date, views) {
     div.style.borderRadius = '5px';
     div.style.marginBottom = '10px';
     div.style.width = '340px';
-    div.innerHTML = `<a id="fileDataA" >Uploaded At: ${date}<br>Views: ${views}<br><br>Link: </a><a id="fileLink" href="/files/${name}" id="fileDataA"> Click Here<a>`;
+    div.innerHTML = `<a id="fileDataA" >Uploaded At: ${date}<br>Views: ${views}<br><img src="/files/${name}" height="200px"><br>Link: </a><a id="fileLink" href="/files/${name}" id="fileDataA"> Click Here<a>`;
 }
 
 function errorMessage(message) {
