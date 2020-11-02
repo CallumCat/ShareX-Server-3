@@ -4,7 +4,7 @@ const { getUserFromDiscord, setUserDiscord } = require('../../database/index');
 
 let name = 'unlinkaccount';
 let aliases = ['ula', 'unlinkacc', 'ulaccount'];
-let permissions = 0;
+let owner = false;
 let run = async msg => {
   let userData = await getUserFromDiscord(msg.author.id);
   if (userData === null) {
@@ -21,4 +21,4 @@ let run = async msg => {
     .setColor('#e9172b'));
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };

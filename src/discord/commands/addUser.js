@@ -4,26 +4,12 @@
 const { MessageEmbed } = require('discord.js-light');
 
 const { saveUser, getUserFromKey } = require('../../database/index');
-
-let createKey = async () => {
-  let string = Math.floor(Math.random() * (10 ** 18)).toString(36) +
-    Math.floor(Math.random() * (10 ** 18)).toString(36) +
-    Math.floor(Math.random() * (10 ** 18)).toString(36);
-  let urlTest = await getUserFromKey(string);
-  if (urlTest !== null) return createKey();
-  return string;
-};
+const { createKey } = require('../../util/util');
 
 let name = 'newuser';
 let aliases = ['newu', 'nu'];
-let permissions = 100;
-let run = async (msg, args, owner) => {
-  if (!owner) {
-    return msg.channel.send(new MessageEmbed()
-      .setTitle('You do not have the required permissions to run this command.')
-      .setColor('#e9172b'));
-  }
-
+let owner = true;
+let run = async (msg, args) => {
   if (!args[0]) {
     return msg.channel.send(new MessageEmbed()
       .setTitle('You must include the name of a new user.')
@@ -38,7 +24,7 @@ let run = async (msg, args, owner) => {
       .setColor('#e9172b'));
   }
 
-  let key = (await createKey()).toString();
+  let key = await createKey();
   await saveUser({
     key: key,
     name: uName,
@@ -58,4 +44,4 @@ let run = async (msg, args, owner) => {
     .setColor('#1eda61'));
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };

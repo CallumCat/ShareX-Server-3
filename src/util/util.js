@@ -1,3 +1,4 @@
+const { createHash } = require('crypto');
 const { getUserFromKey } = require('../database/index.js');
 
 module.exports.createKey = async () => {
@@ -16,3 +17,5 @@ module.exports.generateRandomString = length => {
   }
   return result;
 };
+
+module.exports.sha265 = str => createHash('sha256').update(str).digest('hex');

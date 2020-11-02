@@ -4,7 +4,7 @@ const { getUserFromKey, setUserDiscord, getUserFromDiscord } = require('../../da
 
 let name = 'linkaccount';
 let aliases = ['la', 'linkacc', 'laccount'];
-let permissions = 0;
+let owner = false;
 let run = async (msg, args) => {
   let userCheck = await getUserFromDiscord(msg.author.id);
   if (userCheck !== null) {
@@ -39,4 +39,4 @@ let run = async (msg, args) => {
     .setColor('#e9172b'));
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };

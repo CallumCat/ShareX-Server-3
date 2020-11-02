@@ -4,7 +4,7 @@ const { getUserFromDiscord, setUserDomain } = require('../../database/index');
 
 let name = 'setdomain';
 let aliases = ['sd', 'domain'];
-let permissions = 0;
+let owner = false;
 let run = async (msg, args) => {
   let userData = await getUserFromDiscord(msg.author.id);
   if (userData === null) {
@@ -32,4 +32,4 @@ let run = async (msg, args) => {
   }
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };

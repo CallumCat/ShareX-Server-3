@@ -4,8 +4,8 @@ const { getUserFromName } = require('../../database/index');
 
 let name = 'userinfo';
 let aliases = ['ui'];
-let permissions = 0;
-let run = async (msg, args, owner) => {
+let owner = false;
+let run = async (msg, args, isOwner) => {
   if (!args[0]) {
     return msg.channel.send(new MessageEmbed()
       .setTitle('You must include the name of a user.')
@@ -22,7 +22,7 @@ let run = async (msg, args, owner) => {
       .setColor('#e9172b'));
   }
 
-  if (!owner) {
+  if (!isOwner) {
     return msg.channel.send(new MessageEmbed()
       .setTitle(`User: \`${uName}\``)
       .setDescription(`**Uploads**: \`${userData.uploads}\`\n**Redirects**: \`${userData.redirects}\``)
@@ -39,4 +39,4 @@ let run = async (msg, args, owner) => {
     .setColor('#1eda61'));
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };

@@ -3,7 +3,7 @@
 */
 const config = require('../config.json');
 
-const { Client, Collection } = require('discord.js-light');
+const { Client, Collection, MessageEmbed } = require('discord.js-light');
 const { readdirSync } = require('fs');
 const { resolve } = require('path');
 
@@ -40,6 +40,12 @@ let startBot = () => {
 
       let userData = await getUserFromDiscord(msg.author.id);
       let owner = userData === null ? false : userData.owner;
+
+      if (cmd.owner && !owner) {
+        return msg.channel.send(new MessageEmbed()
+          .setTitle('You do not have the required permissions to run this command.')
+          .setColor('#e9172b'));
+      }
 
       cmd.run(msg, args, owner);
     });

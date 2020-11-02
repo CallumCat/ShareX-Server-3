@@ -1,5 +1,5 @@
 const { getUserFromKey, getUserFromPassword } = require('../../database/index.js');
-const { sha256 } = require('../../util/hash.js');
+const { sha256 } = require('../../util/util.js');
 
 async function authentication (req, res, next) {
   let userData;

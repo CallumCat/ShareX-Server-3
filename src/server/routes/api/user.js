@@ -5,9 +5,8 @@
 const { Router, json } = require('express');
 
 const db = require('../../../database/index');
-const { userAPIGET, userAPIPOST, userAPIGETUPLOADS } = require('../../../util/logger');
-const { createKey } = require('../../../util/util');
-const { sha256 } = require('../../../util/hash');
+const { userAPIGET, userAPIPOST, userAPIGETUPLOADS } = require('../../../util/logger.js');
+const { createKey, sha256 } = require('../../../util/util.js');
 
 const router = Router();
 

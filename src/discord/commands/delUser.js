@@ -7,14 +7,8 @@ const { getUserFromName, delUser } = require('../../database/index');
 
 let name = 'deluser';
 let aliases = ['delu', 'du'];
-let permissions = 100;
-let run = async (msg, args, owner) => {
-  if (!owner) {
-    return msg.channel.send(new MessageEmbed()
-      .setTitle('You do not have the required permissions to run this command.')
-      .setColor('#e9172b'));
-  }
-
+let owner = true;
+let run = async (msg, args) => {
   if (!args[0]) {
     return msg.channel.send(new MessageEmbed()
       .setTitle('You must include the name of a user.')
@@ -44,4 +38,4 @@ let run = async (msg, args, owner) => {
     .setColor('#e9172b'));
 };
 
-module.exports = { name, aliases, run, permissions };
+module.exports = { name, aliases, run, owner };
