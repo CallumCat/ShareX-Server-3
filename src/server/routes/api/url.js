@@ -22,7 +22,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-let CreateUrl = async length => {
+const CreateUrl = async length => {
   length = parseInt(length);
   let number = generateRandomString(10);
   let urlTest = await getURL(number);
@@ -92,6 +92,5 @@ router.post('/api/url', authentication, async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   return res.status(200).end(`${urlPart}/url/${redirectNum}`);
 });
-
 
 module.exports = router;

@@ -1,7 +1,6 @@
 /*
     The router for creating a short url
 */
-
 const { Router, json } = require('express');
 
 const db = require('../../../database/index');

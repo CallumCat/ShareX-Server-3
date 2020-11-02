@@ -1,6 +1,6 @@
 {
     "name": "sharex-server",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "This is a ShareX server that I made.\r Written in around seven weeks so far.",
     "main": "./src/sharex.js",
     "dependencies": {
