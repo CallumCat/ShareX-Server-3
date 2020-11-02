@@ -9,7 +9,7 @@ module.exports.createKey = async () => {
 };
 
 module.exports.generateRandomString = length => {
-  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=[];',.)(*&^%$#@!";
+  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
   let charsLength = chars.length;
   let result;
   for (let i = 0; i < length; i++) {
