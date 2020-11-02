@@ -1,9 +1,9 @@
 async function getStuff() {
     let username = document.getElementById('username').value;
-    if (!username) return errorMessage('No username was given.');
+    if (!username) return message('No username was given.', 'red');
 
     let password = document.getElementById('password').value;
-    if (!password) return errorMessage('No password was given.');
+    if (!password) return message('No password was given.', 'red');
 
     let data = await fetch('/api/user/uploads', {
         method: 'GET',
@@ -19,7 +19,7 @@ async function getStuff() {
     try {
         dataArray = dataArray.sort((a, b) => a.UploadedAt - b.UploadedAt).reverse();
     } catch (e) {
-        return errorMessage('An incorrect username or password was provided');
+        return message('An incorrect username or password was provided', 'red');
     }
 
     dataArray.forEach(e => {
@@ -34,7 +34,7 @@ async function getStuff() {
     document.getElementById('error').setAttribute('style', 'corsor: default;');
 
     if (dataArray.length === 0)
-        goodMessage('You do not have any files uploaded.');
+        message('You do not have any files uploaded.', 'green');
     else document.getElementById('error').setAttribute('hidden', 'true');
     return;
 }
@@ -63,17 +63,11 @@ function showMoreData(name, date, views) {
     div.innerHTML = `<a id="fileDataA" >Uploaded At: ${date}<br>Views: ${views}<br><img src="/files/${name}" height="200px"><br>Link: </a><a id="fileLink" href="/files/${name}" id="fileDataA"> Click Here<a>`;
 }
 
-function errorMessage(message) {
+function message(_message, color) {
     let error = document.getElementById('error');
-    error.textContent = message;
-    error.style.color = 'red';
-}
-
-function goodMessage(message) {
-    let error = document.getElementById('error');
-    error.textContent = message.toString();
+    error.textContent = _message.toString();
+    error.style.color = color;
     error.onclick = copyToClipboard(error.innerText);
-    error.style.color = 'green';
 }
 
 function copyToClipboard(str) {

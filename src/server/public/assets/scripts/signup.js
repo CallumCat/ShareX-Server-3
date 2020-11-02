@@ -1,9 +1,9 @@
 async function getStuff() {
     let username = document.getElementById('username').value;
-    if (!username) return errorMessage('No username was given.');
+    if (!username) return message('No username was given.', 'red');
 
     let password = document.getElementById('password').value;
-    if (!password) return errorMessage('No password was given.');
+    if (!password) return message('No password was given.', 'red');
 
     let data = await fetch('/api/user', {
         method: 'POST',
@@ -15,7 +15,7 @@ async function getStuff() {
 
     data = await data.json();
 
-    if (data.error) return errorMessage(data.error);
+    if (data.error) return message(data.error, 'red');
 
     document.getElementById('UserName').setAttribute('hidden', 'true');
     document.getElementById('PassWord').setAttribute('hidden', 'true');
@@ -40,21 +40,15 @@ async function getStuff() {
     // <div id=date>
     //     <a class="resultA">Created At: ${data.CreatedAt}</a>
     // </div>;
-    goodMessage('Copy your key so you can upload with it.');
+    message('Copy your key so you can upload with it.', 'green');
     return;
 }
 
-function errorMessage(message) {
+function message(_message, color) {
     let error = document.getElementById('error');
-    error.textContent = message.toString();
-    error.style.color = 'red';
-}
-
-function goodMessage(message) {
-    let error = document.getElementById('error');
-    error.textContent = message.toString();
+    error.textContent = _message.toString();
+    error.style.color = color;
     error.onclick = copyToClipboard(error.innerText);
-    error.style.color = 'green';
 }
 
 function copyToClipboard(str) {
@@ -64,13 +58,4 @@ function copyToClipboard(str) {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-}
-
-function isJson(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
 }

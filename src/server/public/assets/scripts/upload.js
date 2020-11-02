@@ -2,17 +2,17 @@ let oldFile;
 
 async function upload() {
     const fileField = document.querySelector('input[type="file"]');
-    if (!fileField.files[0]) return errorMessage('No file was chosen.');
+    if (!fileField.files[0]) return message('No file was chosen.', 'red');
 
-    if (oldFile === fileField.files[0]) return errorMessage('That file was already uploaded.');
+    if (oldFile === fileField.files[0]) return message('That file was already uploaded.', 'red');
     oldFile = fileField.files[0];
 
 
     let username = document.getElementById('username').value;
-    if (!username) return errorMessage('No username was given.');
+    if (!username) return message('No username was given.', 'red');
 
     let password = document.getElementById('password').value;
-    if (!password) return errorMessage('No password was given.');
+    if (!password) return message('No password was given.', 'red');
 
     const formData = new FormData();
     formData.append('file', fileField.files[0]);
@@ -29,9 +29,9 @@ async function upload() {
     let url = await data.text();
 
     if (isJson(url)) {
-        errorMessage(JSON.parse(url).error);
+        message(JSON.parse(url).error, 'red');
     } else {
-        goodMessage(url);
+        message(url, 'green');
         copyToClipboard(url);
     }
 
@@ -40,17 +40,11 @@ async function upload() {
     return;
 }
 
-function errorMessage(message) {
+function message(_message, color) {
     let error = document.getElementById('error');
-    error.textContent = message.toString();
-    error.style.color = 'red';
-}
-
-function goodMessage(message) {
-    let error = document.getElementById('error');
-    error.textContent = message.toString();
+    error.textContent = _message.toString();
+    error.style.color = color;
     error.onclick = copyToClipboard(error.innerText);
-    error.style.color = 'green';
 }
 
 function copyToClipboard(str) {
