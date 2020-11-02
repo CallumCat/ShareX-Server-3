@@ -30,7 +30,7 @@ router.get('/api/user/uploads', authentication, async (req, res) => {
   return res.status(200).json(files);
 });
 
-router.get('/api/user', authentication, async (req, res) => {
+router.get('/api/user', authentication, (req, res) => {
   let returnObj = {
     key: req.userData.key,
     name: req.userData.name,

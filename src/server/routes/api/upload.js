@@ -41,7 +41,7 @@ const createFileName = (fileExt, loc) => {
   return nFN;
 };
 
-router.post('/api/upload', authentication, async (req, res) => {
+router.post('/api/upload', authentication, (req, res) => {
   if (!req.files || !req.files.file) {
     return res.status(400).json({
       error: 'No file was uploaded.',

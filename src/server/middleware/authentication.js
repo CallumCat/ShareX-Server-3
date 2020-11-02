@@ -1,7 +1,7 @@
 const { getUserFromKey, getUserFromPassword } = require('../../database/index.js');
 const { sha256 } = require('../../util/hash.js');
 
-module.exports = async function (req, res, next) {
+async function authentication (req, res, next) {
   let userData;
   if (req.headers.key) {
     // Get userData from key
@@ -31,4 +31,6 @@ module.exports = async function (req, res, next) {
 
   // Call the function to go to the next one.
   next();
-};
+}
+
+module.exports = authentication;

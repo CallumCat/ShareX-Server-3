@@ -7,7 +7,7 @@ module.exports.createKey = async () => {
   return string;
 };
 
-module.exports.generateRandomString = (length) => {
+module.exports.generateRandomString = length => {
   let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=[];',.)(*&^%$#@!";
   let charsLength = chars.length;
   let result;
