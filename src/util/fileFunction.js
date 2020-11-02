@@ -4,7 +4,6 @@ const { loadImage, createCanvas } = require('canvas');
 const { resolve } = require('path');
 const { writeFileSync, existsSync } = require('fs');
 
-
 // Example function
 const png = async _pngPath => {
   if (Math.floor(Math.random() * 100) > 13) return;
