@@ -1,17 +1,19 @@
 /*
-    The router for creating a short url
+The router for creating a short url
 */
 const { mainURL } = require('../../../config.json');
 
 const { Router, json } = require('express');
 
-const { saveURL, getURL, getUserFromKey, getUserFromPassword } = require('../../../database/index');
+const { saveURL, getURL } = require('../../../database/index');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
-const { sha256 } = require('../../../util/hash.js');
+const { generateRandomString } = require('../../../util/util');
 
 const router = Router();
 
 router.use(json());
+
+const authentication = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -20,29 +22,15 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.get('/api/url/:id', async (req, res) => {
-  let userData;
-  if (req.headers.key) {
-    userData = await getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
+let CreateUrl = async length => {
+  length = parseInt(length);
+  let number = generateRandomString(10);
+  let urlTest = await getURL(number);
+  if (urlTest) return CreateUrl(length);
+  return number;
+};
 
+router.get('/api/url/:id', authentication, async (req, res) => {
   let urlID = req.params.id;
   if (!urlID) {
     return res.status(400).json({
@@ -57,7 +45,7 @@ router.get('/api/url/:id', async (req, res) => {
     });
   }
 
-  if (urlData.uploader !== userData.name && userData.owner !== true) {
+  if (urlData.uploader !== req.userData.name && req.userData.owner !== true) {
     return res.status(401).json({
       error: 'You do not have access.',
     });
@@ -77,29 +65,7 @@ router.get('/api/url/:id', async (req, res) => {
   return res.status(200).json(returnObj);
 });
 
-router.post('/api/url', async (req, res) => {
-  let userData;
-  if (req.headers.key) {
-    userData = await getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
-
+router.post('/api/url', authentication, async (req, res) => {
   let url = req.body.url;
   if (!url) {
     return res.status(400).json({
@@ -112,27 +78,20 @@ router.post('/api/url', async (req, res) => {
   await saveURL({
     id: redirectNum,
     views: 0,
-    uploader: userData.name,
+    uploader: req.userData.name,
     redirect: url,
     CreatedAt: new Date(),
   });
 
-  let urlPart = userData.domain === undefined || userData.domain === 'none' ?
-    mainURL : userData.subdomain === undefined || userData.subdomain === 'none' ?
-      mainURL : `https://${userData.subdomain}.${userData.domain}`;
+  let urlPart = req.userData.domain === undefined || req.userData.domain === 'none' ?
+    mainURL : req.userData.subdomain === undefined || req.userData.subdomain === 'none' ?
+      mainURL : `https://${req.userData.subdomain}.${req.userData.domain}`;
 
-  urlPOST(url, req.ip, userData.key);
+  urlPOST(url, req.ip, req.userData.key);
 
   res.setHeader('Content-Type', 'application/json');
   return res.status(200).end(`${urlPart}/url/${redirectNum}`);
 });
 
-let CreateUrl = async length => {
-  length = parseInt(length);
-  let number = Math.floor(Math.random() * (10 ** length)).toString(36);
-  let urlTest = await getURL(number);
-  if (urlTest) return CreateUrl(length);
-  return number;
-};
 
 module.exports = router;

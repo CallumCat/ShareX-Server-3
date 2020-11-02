@@ -7,12 +7,14 @@ const { Router } = require('express');
 const { existsSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 
-const { getUserFromKey, addUserUpload, saveFile, getUserFromPassword } = require('../../../database/index');
+const { addUserUpload, saveFile } = require('../../../database/index');
 const { filePOST } = require('../../../util/logger');
-const { sha256 } = require('../../../util/hash');
+const { generateRandomString } = require('../../../util/util');
 const fileFunctionMap = require('../../../util/fileFunction.js');
 
 const router = Router();
+
+const authentication = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -33,42 +35,20 @@ router.use(fileUpload({
 }));
 
 const createFileName = (fileExt, loc) => {
-  let nFN = `${Math.floor(Math.random() * 9007199254740991).toString(36)}.${fileExt}`;
+  let nFN = `${generateRandomString(15)}.${fileExt}`;
   let fileLocation = `./uploads/${loc}/${nFN}.${fileExt}`;
   if (existsSync(fileLocation)) return createFileName(fileExt, loc);
   return nFN;
 };
 
-router.post('/api/upload', async (req, res) => {
-  let userData;
-  if (req.headers.key) {
-    userData = await getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
-
+router.post('/api/upload', authentication, async (req, res) => {
   if (!req.files || !req.files.file) {
     return res.status(400).json({
       error: 'No file was uploaded.',
     });
   }
 
-  let location = userData.name;
+  let location = req.userData.name;
   let fileName = req.files.file.name.split('.');
   let fileExt = fileName[fileName.length - 1];
   let name = createFileName(fileExt, location);
@@ -101,12 +81,12 @@ router.post('/api/upload', async (req, res) => {
       },
     });
 
-    let linkPart = userData.domain === undefined || userData.domain === 'none' ?
-      mainURL : userData.subdomain === undefined || userData.subdomain === 'none' ?
-        mainURL : `https://${userData.subdomain}.${userData.domain}`;
+    let linkPart = req.userData.domain === undefined || req.userData.domain === 'none' ?
+      mainURL : req.userData.subdomain === undefined || req.userData.subdomain === 'none' ?
+        mainURL : `https://${req.userData.subdomain}.${req.userData.domain}`;
     let url = `${linkPart}/files/${name}`;
 
-    filePOST(name, req.ip, userData.key);
+    filePOST(name, req.ip, req.userData.key);
 
     res.setHeader('Content-Type', 'application/json');
     res.status(200).end(url);
@@ -114,7 +94,7 @@ router.post('/api/upload', async (req, res) => {
     let fileFunction = fileFunctionMap.get(fileExt);
     if (fileFunction) await fileFunction(uploadPath);
 
-    await addUserUpload(userData.key);
+    await addUserUpload(req.userData.key);
   });
 });
 

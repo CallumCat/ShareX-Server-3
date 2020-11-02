@@ -5,11 +5,12 @@ const { unlink } = require('fs');
 const { Router } = require('express');
 const { resolve } = require('path');
 
-const { getUserFromKey, getUserFromPassword, getFile, delFile } = require('../../../database/index.js');
+const { getFile, delFile } = require('../../../database/index.js');
 const { fileDELETE } = require('../../../util/logger.js');
-const { sha256 } = require('../../../util/hash.js');
 
 const router = Router();
+
+const authentication = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -18,7 +19,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.delete('/api/delete/:name', async (req, res) => {
+router.delete('/api/delete/:name', authentication, async (req, res) => {
   let fileName = req.params.name;
   if (!fileName) {
     return res.status(200).json({
@@ -33,28 +34,7 @@ router.delete('/api/delete/:name', async (req, res) => {
     });
   }
 
-  let userData;
-  if (req.headers.key) {
-    userData = await getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
-  if (userData.name !== fileData.uploader) {
+  if (req.userData.name !== fileData.uploader) {
     return res.status(400).json({
       error: 'An incorrect key was provided.',
     });
@@ -66,7 +46,7 @@ router.delete('/api/delete/:name', async (req, res) => {
     if (err) throw err;
   });
 
-  fileDELETE(fileData.name, req.ip, userData.key);
+  fileDELETE(fileData.name, req.ip, req.userData.key);
 
   return res.status(400).json({
     success: true,

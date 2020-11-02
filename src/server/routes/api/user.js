@@ -6,11 +6,14 @@ const { Router, json } = require('express');
 
 const db = require('../../../database/index');
 const { userAPIGET, userAPIPOST, userAPIGETUPLOADS } = require('../../../util/logger');
+const { createKey } = require('../../../util/util');
 const { sha256 } = require('../../../util/hash');
 
 const router = Router();
 
 router.use(json());
+
+const authentication = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -19,81 +22,28 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-const createKey = async () => {
-  let string = Math.floor(Math.random() * (10 ** 18)).toString(36) +
-    Math.floor(Math.random() * (10 ** 18)).toString(36) +
-    Math.floor(Math.random() * (10 ** 18)).toString(36);
-  let urlTest = await db.getUserFromKey(string);
-  if (urlTest !== null) return createKey();
-  return string;
-};
+router.get('/api/user/uploads', authentication, async (req, res) => {
+  let files = await db.getAllFiles(req.userData.name);
 
-router.get('/api/user/uploads', async (req, res) => {
-  let userData;
-  if (req.headers.key) {
-    userData = await db.getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await db.getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
-
-  let files = await db.getAllFiles(userData.name);
-
-  userAPIGETUPLOADS(userData.name, userData.key, req.ip);
+  userAPIGETUPLOADS(req.userData.name, req.userData.key, req.ip);
 
   return res.status(200).json(files);
 });
 
-router.get('/api/user', async (req, res) => {
-  let userData;
-  if (req.headers.key) {
-    userData = await db.getUserFromKey(req.headers.key);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect key was provided in the headers.',
-      });
-    }
-  } else if (req.headers.username && req.headers.password) {
-    let password = sha256(req.headers.password);
-    userData = await db.getUserFromPassword(req.headers.username, password);
-    if (userData === null) {
-      return res.status(401).json({
-        error: 'An incorrect username or password was provided in the headers.',
-      });
-    }
-  } else {
-    return res.status(401).json({
-      error: 'No key nor username or password was provided in the headers.',
-    });
-  }
-
+router.get('/api/user', authentication, async (req, res) => {
   let returnObj = {
-    key: userData.key,
-    name: userData.name,
-    owner: userData.owner,
-    uploads: userData.uploads,
-    redirects: userData.redirects,
-    discord: userData.discord,
-    CreatedAt: userData.CreatedAt,
-    domain: userData.domain,
-    subdomain: userData.subdomain,
+    key: req.userData.key,
+    name: req.userData.name,
+    owner: req.userData.owner,
+    uploads: req.userData.uploads,
+    redirects: req.userData.redirects,
+    discord: req.userData.discord,
+    CreatedAt: req.userData.CreatedAt,
+    domain: req.userData.domain,
+    subdomain: req.userData.subdomain,
   };
 
-  userAPIGET(userData.name, userData.key, req.ip);
+  userAPIGET(req.userData.name, req.userData.key, req.ip);
 
   return res.status(200).json(returnObj);
 });
@@ -106,13 +56,6 @@ router.post('/api/user', async (req, res) => {
   }
   let name = req.headers.name;
 
-  let userData = await db.getUserFromName(name);
-  if (userData !== null) {
-    return res.status(400).json({
-      error: 'An user with that name already exists.',
-    });
-  }
-
   if (!req.headers.password) {
     return res.status(400).json({
       error: 'No password was provided in the headers.',
@@ -120,8 +63,14 @@ router.post('/api/user', async (req, res) => {
   }
   let password = sha256(req.headers.password);
 
+  let userData = await db.getUserFromName(name);
+  if (userData !== null) {
+    return res.status(400).json({
+      error: 'A user with that name already exists.',
+    });
+  }
 
-  await db.saveUser({
+  let userObject = {
     key: await createKey(),
     name: name,
     password: password,
@@ -132,25 +81,13 @@ router.post('/api/user', async (req, res) => {
     CreatedAt: new Date(),
     subdomain: 'none',
     domain: 'none',
-  });
-
-  userData = await db.getUserFromName(name);
-
-  let returnObj = {
-    key: userData.key,
-    name: userData.name,
-    owner: userData.owner,
-    uploads: userData.uploads,
-    redirects: userData.redirects,
-    discord: userData.discord,
-    CreatedAt: userData.CreatedAt,
-    domain: userData.domain,
-    subdomain: userData.subdomain,
   };
 
-  userAPIPOST(userData.name, userData.key, req.ip);
+  await db.saveUser(userObject);
 
-  return res.status(200).json(returnObj);
+  userAPIPOST(req.userData.name, req.userData.key, req.ip);
+
+  return res.status(200).json(userObject);
 });
 
 module.exports = router;
