@@ -1,7 +1,7 @@
 const { getUserFromKey, getUserFromPassword } = require('../../database/index.js');
 const { sha256 } = require('../../util/util.js');
 
-async function authentication(req, res, next) {
+async function authentication (req, res, next) {
   let userData;
   if (req.headers.key) {
     // Get userData from key
