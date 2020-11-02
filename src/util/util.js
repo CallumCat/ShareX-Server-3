@@ -11,11 +11,11 @@ module.exports.createKey = async () => {
 module.exports.generateRandomString = length => {
   let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
   let charsLength = chars.length;
-  let result;
+  let result = '';
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * charsLength));
   }
   return result;
 };
 
-module.exports.sha265 = str => createHash('sha256').update(str).digest('hex');
+module.exports.sha256 = str => createHash('sha256').update(str).digest('hex');
