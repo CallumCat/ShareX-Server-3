@@ -7,7 +7,6 @@
 */
 const api = {};
 api.file = require('./api/file');
-api.deleteFile = require('./api/delete');
 api.upload = require('./api/upload');
 api.url = require('./api/url');
 api.user = require('./api/user');
@@ -26,7 +25,6 @@ let setup = app => {
   app.use(api.upload);
   app.use(api.url);
   app.use(api.user);
-  app.use(api.deleteFile);
   app.use(File);
   app.use(URL);
 
