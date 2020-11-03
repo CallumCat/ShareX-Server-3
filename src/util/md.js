@@ -1,4 +1,4 @@
-module.exports = function createData(data, name) {
+module.exports = function createData (data, name) {
   return `
 <head>
 <link rel="shortcut icon" href="/assets/favicon.png" />
@@ -9,7 +9,7 @@ module.exports = function createData(data, name) {
 <style>
 
   * {
-    font-family: 'Ubuntu', sans-serif;
+    font-family: Cascadia Code, Consolas, 'Courier New', monospace;
   }
   html,
   .hljs {

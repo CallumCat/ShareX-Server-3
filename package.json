@@ -23,6 +23,7 @@
         "nodemon": "2.0.4"
     },
     "scripts": {
+        "lint": "eslint . --fix",
         "test": "nodemon .",
         "start": "node ."
     },

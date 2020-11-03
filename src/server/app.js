@@ -33,6 +33,6 @@ module.exports.start = () => {
 
   // Start server and log
   app.listen(PORT, () => {
-    console.log('Starting ShareX Server on port: '.green + PORT.toString().white);
+    console.log('ExpressJS server running on port: '.green + PORT.toString().white);
   });
 };
