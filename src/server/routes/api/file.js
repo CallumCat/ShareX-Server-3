@@ -14,7 +14,7 @@ const router = Router();
 
 router.use(json());
 
-const authentication = require('../../middleware/authentication.js');
+const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -53,7 +53,7 @@ router.get('/api/file/:name', async (req, res) => {
   return res.status(200).json(returnObj);
 });
 
-router.delete('/api/file/:name', authentication, async (req, res) => {
+router.delete('/api/file/:name', auth, async (req, res) => {
   let fileName = req.params.name;
   if (!fileName) {
     return res.status(200).json({

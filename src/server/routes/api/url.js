@@ -13,7 +13,7 @@ const router = Router();
 
 router.use(json());
 
-const authentication = require('../../middleware/authentication.js');
+const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -30,7 +30,7 @@ const CreateUrl = async length => {
   return number;
 };
 
-router.get('/api/url/:id', authentication, async (req, res) => {
+router.get('/api/url/:id', auth, async (req, res) => {
   let urlID = req.params.id;
   if (!urlID) {
     return res.status(400).json({
@@ -65,7 +65,7 @@ router.get('/api/url/:id', authentication, async (req, res) => {
   return res.status(200).json(returnObj);
 });
 
-router.post('/api/url', authentication, async (req, res) => {
+router.post('/api/url', auth, async (req, res) => {
   let url = req.body.url;
   if (!url) {
     return res.status(400).json({

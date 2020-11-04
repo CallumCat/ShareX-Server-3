@@ -14,7 +14,7 @@ const fileFunctionMap = require('../../../util/fileFunction.js');
 
 const router = Router();
 
-const authentication = require('../../middleware/authentication.js');
+const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -41,7 +41,7 @@ const createFileName = (fileExt, loc) => {
   return nFN;
 };
 
-router.post('/api/upload', authentication, (req, res) => {
+router.post('/api/upload', auth, (req, res) => {
   if (!req.files || !req.files.file) {
     return res.status(400).json({
       error: 'No file was uploaded.',

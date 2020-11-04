@@ -18,6 +18,12 @@ module.exports.urlAPIGET = async (id, ip) => {
   console.log(msg);
 };
 
+module.exports.urlDELETE = async (id, key, ip) => {
+  ip = await parseIP(ip);
+  let msg = `${'[GET]'.green} ${'DELETED URL'.bgRed.black} ${id.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
+  console.log(msg);
+};
+
 module.exports.filePOST = async (name, ip, key) => {
   ip = await parseIP(ip);
   let msg = `${'[POST]'.cyan} ${'SAVED FILE'.bgRed.black} ${name.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
@@ -36,7 +42,7 @@ module.exports.fileGET = async (name, ip) => {
   console.log(msg);
 };
 
-module.exports.fileDELETE = async (name, ip, key) => {
+module.exports.fileDELETE = async (name, key, ip) => {
   ip = await parseIP(ip);
   let msg = `${'[DELETE]'.cyan} ${'DELETED FILE'.bgRed.black} ${name.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
   console.log(msg);

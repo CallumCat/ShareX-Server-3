@@ -16,6 +16,7 @@ api.user = require('./api/user');
 */
 const File = require('./files');
 const URL = require('./url');
+const Delete = require('./delete');
 
 /*
     Created so I wouldnt have a mess in the app.js
@@ -27,6 +28,7 @@ let setup = app => {
   app.use(api.user);
   app.use(File);
   app.use(URL);
+  app.use(Delete);
 
   app.delete('/*', (req, res) => { res.status(200).send('nothing here'); });
   app.post('/*', (req, res) => { res.status(200).send('nothing here'); });

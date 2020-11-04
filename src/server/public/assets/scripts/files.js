@@ -1,8 +1,11 @@
+let username;
+let password;
+
 async function getStuff() {
-    let username = document.getElementById('username').value;
+    username = document.getElementById('username').value;
     if (!username) return message('No username was given.', 'red');
 
-    let password = document.getElementById('password').value;
+    password = document.getElementById('password').value;
     if (!password) return message('No password was given.', 'red');
 
     let data = await fetch('/api/user/uploads', {
@@ -46,7 +49,7 @@ function createData(data) {
     div.style.marginTop = '2%';
     div.className = 'fileDiv';
     // div.setAttribute('id', `${data.name}Div`);
-    div.innerHTML = `<a onClick="showMoreData('${data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.originalName || data.name}</a><br><br><div id="${data.name}Div" class="fileDataDiv"></div><br><a href="/pages/delete?f=${data.name}" class="delete">Delete</a>`;
+    div.innerHTML = `<a onClick="showMoreData('${data.name}', '${new Date(data.UploadedAt).toLocaleString()}', '${data.views}')" class="fileA">${data.originalName || data.name}</a><br><br><div id="${data.name}Div" class="fileDataDiv"></div><br><a href="/delete/files/${data.name}?username=${username}&password=${password}" class="delete">Delete</a>`;
     document.body.appendChild(div);
 }
 

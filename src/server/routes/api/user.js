@@ -11,7 +11,7 @@ const router = Router();
 
 router.use(json());
 
-const authentication = require('../../middleware/authentication.js');
+const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -20,7 +20,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.get('/api/user/uploads', authentication, async (req, res) => {
+router.get('/api/user/uploads', auth, async (req, res) => {
   let files = await db.getAllFiles(req.userData.name);
 
   userAPIGETUPLOADS(req.userData.name, req.userData.key, req.ip);
@@ -28,7 +28,7 @@ router.get('/api/user/uploads', authentication, async (req, res) => {
   return res.status(200).json(files);
 });
 
-router.get('/api/user', authentication, (req, res) => {
+router.get('/api/user', auth, (req, res) => {
   let returnObj = {
     key: req.userData.key,
     name: req.userData.name,
