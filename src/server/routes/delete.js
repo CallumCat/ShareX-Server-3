@@ -26,7 +26,7 @@ router.get('/delete/files/:name', browserAuth, async (req, res) => {
   let fileData = await getFile(fileName);
   if (fileData === null) return res.status(404).redirect('/?error=File_does_not_exist.');
 
-  if (fileData.uploader !== req.userData.name) return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
+  if (fileData.uploader !== req.userData.name && !req.userData.owner) return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
 
   let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
   if (!existsSync(filePath)) return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
@@ -46,7 +46,7 @@ router.get('/delete/url/:id', browserAuth, async (req, res) => {
   let urlData = await getURL(urlID);
   if (urlData === null) return res.status(404).sendFile(resolve('src/server/public/404/index.html'));
 
-  if (urlData.uploader !== req.userData.name) return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
+  if (urlData.uploader !== req.userData.name && !req.userData.owner) return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
 
   delURL(urlID);
 
