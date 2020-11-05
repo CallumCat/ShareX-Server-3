@@ -66,4 +66,24 @@ module.exports.userAPIPOST = async (name, key, ip) => {
   console.log(msg);
 };
 
-let parseIP = async ip => ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
+module.exports.log = (message, ...args) => {
+  let msg = `${'[LOG]'.green} ${message.toString().white} ${args.length > 0 ? args.join(' ').white : ''}`;
+  console.log(msg);
+};
+
+module.exports.warn = (message, ...args) => {
+  let msg = `${'[WARN]'.yellow} ${message.toString().yellow} ${args.length > 0 ? args.join(' ').yellow : ''}`;
+  console.log(msg);
+};
+
+module.exports.error = (message, ...args) => {
+  let msg = `${'[WARN]'.red} ${message.toString().red} ${args.length > 0 ? args.join(' ').red : ''}`;
+  console.log(msg);
+};
+
+module.exports.debug = (message, ...args) => {
+  let msg = `${'[DEBUG]'.magenta} ${message.toString().cyan} ${args.length > 0 ? args.join(' ').cyan : ''}`;
+  console.log(msg);
+};
+
+let parseIP = async ip => ip.re; place('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
