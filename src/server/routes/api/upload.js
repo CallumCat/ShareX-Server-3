@@ -53,7 +53,7 @@ router.post('/', auth, (req, res) => {
   if (!existsSync(`./uploads/${location}/${year}/${month}/${day}`))
     mkdirSync(`./uploads/${location}/${year}/${month}/${day}`, { recursive: true });
 
-  req.files.file.mv(uploadPath, async err => {
+  req.files.file.mv(resolve('../../', uploadPath), async err => {
     if (err) return res.status(500).send(err);
 
     // let lockActive = req.body.locked || false;
