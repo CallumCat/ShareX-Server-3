@@ -38,7 +38,7 @@ router.post('/', auth, (req, res) => {
     error: 'No file was uploaded.',
   });
 
-  let location = req.userData.name;
+  let location = req.userData.id;
   let fileName = req.files.file.name.split('.');
   let fileExt = fileName[fileName.length - 1];
   let name = createFileName(fileExt, location);
