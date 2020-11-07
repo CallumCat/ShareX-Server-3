@@ -117,8 +117,8 @@ router.post('/browser', async (req, res) => {
   req.files.file.mv(resolve('../../', uploadPath), async err => {
     if (err) return res.status(500).send(err);
 
-    let lockActive = req.body.locked || false;
-    let lockPassword = req.body.password || 'none';
+    // let lockActive = req.body.locked || false;
+    // let lockPassword = req.body.password || 'none';
 
     await saveFile({
       originalName: req.files.file.name,
@@ -127,10 +127,10 @@ router.post('/browser', async (req, res) => {
       name: name,
       UploadedAt: new Date(),
       views: 0,
-      lock: {
-        active: lockActive,
-        password: lockPassword,
-      },
+      // lock: {
+      //   active: lockActive,
+      //   password: lockPassword,
+      // },
     });
 
     let linkPart = userData.domain === undefined || userData.domain === 'none' ?
