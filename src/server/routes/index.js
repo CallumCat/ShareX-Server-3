@@ -7,29 +7,40 @@
 */
 const api = {};
 api.file = require('./api/file');
+api.login = require('./api/login');
+api.logout = require('./api/logout');
+api.signup = require('./api/signup');
 api.upload = require('./api/upload');
 api.url = require('./api/url');
-api.user = require('./api/user');
 
 /*
-    GET requests (browsers)
+    GET requests
 */
 const File = require('./files');
 const URL = require('./url');
-const Delete = require('./delete');
+
+/*
+    Browsers LOL
+*/
+const browser = require('./browser');
 
 /*
     Created so I wouldnt have a mess in the app.js
 */
 let setup = app => {
-  app.use(api.file);
-  app.use(api.upload);
-  app.use(api.url);
-  app.use(api.user);
-  app.use(File);
-  app.use(URL);
-  app.use(Delete);
+  app.use('/api/file', api.file);
+  app.use('/api/login', api.login);
+  app.use('/api/logout', api.logout);
+  app.use('/api/signup', api.signup);
+  app.use('/api/upload', api.upload);
+  app.use('/api/url', api.url);
+  app.use('/url', URL);
+  app.use('/files', File);
 
+  // Browsers
+  app.use('/', browser);
+
+  // 404s
   app.delete('/*', (req, res) => { res.status(200).send('nothing here'); });
   app.post('/*', (req, res) => { res.status(200).send('nothing here'); });
   app.put('/*', (req, res) => { res.status(200).send('nothing here'); });

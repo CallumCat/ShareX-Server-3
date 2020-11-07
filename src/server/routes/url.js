@@ -2,9 +2,11 @@
     The router for redirecting
 */
 const { Router } = require('express');
+const { resolve } = require('path');
 
-const { addURLView, getURL } = require('../../database/index');
-const { urlGET } = require('../../util/logger');
+const { addURLView, getURL, delURL } = require('../../mongo/functions');
+const { urlGET, urlDELETE } = require('../../util/logger');
+const { browserAuth } = require('../middleware/authentication.js');
 
 const router = Router();
 
@@ -15,26 +17,41 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.get('/url/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   let URLID = req.params.id;
-  if (!URLID) {
-    return res.status(404).json({
-      error: 'No URL ID included.',
-    });
-  }
+  if (!URLID) return res.status(404).json({
+    error: 'No URL ID included.',
+  });
+
 
   let URLData = await getURL(URLID);
-  if (URLData === null) {
-    return res.status(404).json({
-      error: 'URL not found.',
-    });
-  }
+  if (URLData === null) return res.status(404).json({
+    error: 'URL not found.',
+  });
+
 
   await addURLView(URLID);
 
   urlGET(req.ip, URLData.redirect);
 
   return res.status(302).redirect(URLData.redirect);
+});
+
+router.get('/delete/:id', browserAuth, async (req, res) => {
+  let urlID = req.params.id;
+  if (!urlID) return res.status(404).sendFile(resolve('src/server/public/404/index.html'));
+
+  let urlData = await getURL(urlID);
+  if (urlData === null) return res.status(404).sendFile(resolve('src/server/public/404/index.html'));
+
+  if (urlData.uploader !== req.userData.name && !req.userData.owner)
+    return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
+
+  delURL(urlID);
+
+  res.status(200).redirect('/?success=Successfully_deleted_the_url_redirect.');
+
+  urlDELETE(urlID, req.userData.key, req.ip);
 });
 
 module.exports = router;

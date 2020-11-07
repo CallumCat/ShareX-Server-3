@@ -86,4 +86,4 @@ module.exports.debug = (message, ...args) => {
   console.log(msg);
 };
 
-let parseIP = async ip => ip.re; place('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
+let parseIP = async ip => ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');

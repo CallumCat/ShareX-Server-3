@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Home - ShareX-Server</title>
+  <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+  <link rel="shortcut icon" href="/assets/favicon.png" />
+
+  <meta content="Home - ShareX-Server" property="og:title">
+  <!-- meta tags needed -->
+</head>
+
+<body>
+
+  <%- include('../parts/navbar.ejs') %>
+
+  <div class="title">
+    <h2>A ShareX Server</h2>
+    <h2>Made By MILLION#1321</h2>
+  </div>
+
+  <% if (error) { %>
+  <div class="errorDiv">
+    <a class="error"><%= error %></a>
+  </div>
+  <% } else if (success) { %>
+  <div class="successDiv">
+    <a class="success" href="<%= success %>"><%= success %></a>
+  </div>
+  <% } %>
+
+</body>
+
+</html>

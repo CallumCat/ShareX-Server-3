@@ -1,23 +1,10 @@
-const config = require('../config.json');
+const config = require('../../config.json');
 
 const mongoose = require('mongoose');
 
 // ------------------------------------------------------------
 
-const FileSchema = mongoose.Schema({
-  originalName: String,
-  name: String,
-  path: String,
-  views: Number,
-  uploader: String,
-  UploadedAt: String,
-  lock: {
-    active: Boolean,
-    password: String,
-  },
-});
-
-let FileModel = mongoose.model('file', FileSchema);
+const FileModel = require('./models/file.js');
 
 module.exports.addFileView = async fileName => {
   let fileData = await this.getFile(fileName);
@@ -27,8 +14,8 @@ module.exports.addFileView = async fileName => {
   return true;
 };
 
-module.exports.getAllFiles = async uploader => {
-  let fileData = await FileModel.find({ uploader: uploader }).lean();
+module.exports.getAllFiles = async id => {
+  let fileData = await FileModel.find({ uploader: id }).lean();
   return fileData;
 };
 
@@ -51,15 +38,7 @@ module.exports.delFile = async fileName => {
 
 // ------------------------------------------------------------
 
-const URLSchema = mongoose.Schema({
-  id: String,
-  views: Number,
-  uploader: String,
-  redirect: String,
-  CreatedAt: String,
-});
-
-let URLModel = mongoose.model('url', URLSchema);
+let URLModel = require('./models/url.js');
 
 module.exports.addURLView = async ID => {
   let URLData = await this.getURL(ID);
@@ -88,21 +67,7 @@ module.exports.delURL = async ID => {
 
 // ------------------------------------------------------------
 
-const UserSchema = mongoose.Schema({
-  key: String,
-  name: String,
-  password: String,
-  owner: Boolean,
-  uploads: Number,
-  redirects: Number,
-  discord: String,
-  CreatedAt: String,
-  subdomain: String,
-  domain: String,
-});
-
-let UserModel = mongoose.model('users', UserSchema);
-module.exports.UserModel = UserModel;
+let UserModel = require('./models/user.js');
 
 module.exports.setUserDomain = async (key, domain) => {
   let userData = await this.getUserFromKey(key);
@@ -139,6 +104,11 @@ module.exports.setUserDiscord = async (key, discord) => {
   if (!userData) return null;
   await UserModel.updateOne(userData, { discord: discord });
   return true;
+};
+
+module.exports.getUserFromID = async id => {
+  let userData = await UserModel.findOne({ id: id }).lean();
+  return userData;
 };
 
 module.exports.getUserFromKey = async key => {

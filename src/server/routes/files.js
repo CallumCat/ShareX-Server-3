@@ -3,10 +3,11 @@
 */
 const { Router } = require('express');
 const { resolve } = require('path');
-const { existsSync, readFileSync } = require('fs');
+const { existsSync, readFileSync, unlinkSync } = require('fs');
 
-const { getFile, addFileView } = require('../../database/index');
-const { fileGET } = require('../../util/logger');
+const { delFile, getFile, addFileView } = require('../../mongo/functions');
+const { fileGET, fileDELETE } = require('../../util/logger');
+const { browserAuth } = require('../middleware/authentication.js');
 const mdFile = require('../../util/md.js');
 
 const { highlightAuto } = require('highlight.js');
@@ -21,34 +22,34 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.get('/files/:name', async (req, res) => {
+// Router.get('/:name', async (req, res) => {
+//   let fileName = req.params.name;
+//   if (!fileName) return res.status(302).redirect('/404');
+
+//   let fileData = await getFile(fileName);
+//   if (fileData === null) return res.status(302).redirect('/404');
+
+//   await addFileView(fileName);
+
+//   let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
+//   if (!existsSync(filePath)) return res.status(302).redirect('/404');
+
+//   fileGET(fileName, req.ip);
+
+//   return res.sendFile(filePath);
+// });
+
+router.get('/:name', async (req, res) => {
   let fileName = req.params.name;
-  if (!fileName) return res.status(302).redirect('/404');
+  if (!fileName) return res.status(200).render('pages/404.ejs', { user: null, error: 'File Not Found', success: null });
 
   let fileData = await getFile(fileName);
-  if (fileData === null) return res.status(302).redirect('/404');
+  if (fileData === null) return res.status(200).render('pages/404.ejs', { user: null, error: 'File Not Found', success: null });
 
   await addFileView(fileName);
 
   let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
-  if (!existsSync(filePath)) return res.status(302).redirect('/404');
-
-  fileGET(fileName, req.ip);
-
-  return res.sendFile(filePath);
-});
-
-router.get('/md/:name', async (req, res) => {
-  let fileName = req.params.name;
-  if (!fileName) return res.status(302).redirect('/404');
-
-  let fileData = await getFile(fileName);
-  if (fileData === null) return res.status(302).redirect('/404');
-
-  await addFileView(fileName);
-
-  let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
-  if (!existsSync(filePath)) return res.status(302).redirect('/404');
+  if (!existsSync(filePath)) return res.status(200).render('pages/404.ejs', { user: null, error: 'File Not Found', success: null });
 
   if (!await isFileUtf8(filePath)) return res.sendFile(filePath);
 
@@ -59,6 +60,28 @@ router.get('/md/:name', async (req, res) => {
   output = mdFile(output, fileData.originalName);
 
   return res.send(output);
+});
+
+router.get('/delete/:name', browserAuth, async (req, res) => {
+  let fileName = req.params.name;
+  if (!fileName) return res.status(404).redirect('/?error=File does not exist.');
+
+  let fileData = await getFile(fileName);
+  if (fileData === null) return res.status(404).redirect('/?error=File does not exist.');
+
+  if (fileData.uploader !== req.userData.id && !req.userData.owner)
+    return res.status(401).redirect('/?error=You do not have permissions to do this.');
+
+  let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
+  if (!existsSync(filePath))
+    return res.status(401).redirect('/?error=File does not exist.');
+
+  delFile(fileName);
+  unlinkSync(filePath);
+
+  res.status(200).redirect('/?success=Successfully deleted the file.');
+
+  fileDELETE(fileName, req.userData.key, req.ip);
 });
 
 module.exports = router;

@@ -1,11 +1,11 @@
 /*
 The router for creating a short url
 */
-const { mainURL } = require('../../../config.json');
+const { mainURL } = require('../../../../config.json');
 
 const { Router, json } = require('express');
 
-const { saveURL, getURL } = require('../../../database/index');
+const { saveURL, getURL } = require('../../../mongo/functions');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
 const { generateRandomString } = require('../../../util/util');
 
@@ -30,26 +30,23 @@ const CreateUrl = async length => {
   return number;
 };
 
-router.get('/api/url/:id', auth, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   let urlID = req.params.id;
-  if (!urlID) {
-    return res.status(400).json({
-      error: 'No URL ID provided.',
-    });
-  }
+  if (!urlID) return res.status(400).json({
+    error: 'No URL ID provided.',
+  });
+
 
   let urlData = await getURL(urlID);
-  if (urlData === null) {
-    return res.status(400).json({
-      error: 'URL not found.',
-    });
-  }
+  if (urlData === null) return res.status(400).json({
+    error: 'URL not found.',
+  });
 
-  if (urlData.uploader !== req.userData.name && req.userData.owner !== true) {
-    return res.status(401).json({
-      error: 'You do not have access.',
-    });
-  }
+
+  if (urlData.uploader !== req.userData.name && req.userData.owner !== true) return res.status(401).json({
+    error: 'You do not have access.',
+  });
+
 
   let returnObj = {
     id: urlData.id,
@@ -65,13 +62,11 @@ router.get('/api/url/:id', auth, async (req, res) => {
   return res.status(200).json(returnObj);
 });
 
-router.post('/api/url', auth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   let url = req.body.url;
-  if (!url) {
-    return res.status(400).json({
-      error: 'No url provided.',
-    });
-  }
+  if (!url) return res.status(400).json({
+    error: 'No url provided.',
+  });
 
   let redirectNum = await CreateUrl(10);
 
