@@ -48,12 +48,12 @@ router.post('/', auth, (req, res) => {
   let month = date.getMonth() + 1;
   let day = date.getDate();
 
-  let uploadPath = `uploads/${location}/${year}/${month}/${day}/${name}`;
+  let uploadPath = `uploads/${location}/${year}/${month}/${day}`;
 
   if (!existsSync(resolve('../../', uploadPath)))
     mkdirSync(resolve('../../', uploadPath), { recursive: true });
 
-  req.files.file.mv(resolve('../../', uploadPath), async err => {
+  req.files.file.mv(resolve('../../', uploadPath + '/' + name), async err => {
     if (err) return res.status(500).send(err);
 
     await saveFile({
