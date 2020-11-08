@@ -59,7 +59,7 @@ router.post('/', auth, (req, res) => {
     await saveFile({
       originalName: req.files.file.name,
       uploader: location,
-      path: uploadPath,
+      path: uploadPath + '/' + name,
       name: name,
       UploadedAt: new Date(),
       views: 0,
