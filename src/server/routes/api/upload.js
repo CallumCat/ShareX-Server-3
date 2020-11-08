@@ -50,14 +50,11 @@ router.post('/', auth, (req, res) => {
 
   let uploadPath = `uploads/${location}/${year}/${month}/${day}/${name}`;
 
-  if (!existsSync(`./uploads/${location}/${year}/${month}/${day}`))
-    mkdirSync(`./uploads/${location}/${year}/${month}/${day}`, { recursive: true });
+  if (!existsSync(resolve('../../', uploadPath)))
+    mkdirSync(resolve('../../', uploadPath), { recursive: true });
 
   req.files.file.mv(resolve('../../', uploadPath), async err => {
     if (err) return res.status(500).send(err);
-
-    // let lockActive = req.body.locked || false;
-    // let lockPassword = req.body.password || 'none';
 
     await saveFile({
       originalName: req.files.file.name,
@@ -66,10 +63,6 @@ router.post('/', auth, (req, res) => {
       name: name,
       UploadedAt: new Date(),
       views: 0,
-      // lock: {
-      //   active: lockActive,
-      //   password: lockPassword,
-      // },
     });
 
     let linkPart = req.userData.domain === undefined || req.userData.domain === 'none' ?
@@ -117,9 +110,6 @@ router.post('/browser', async (req, res) => {
   req.files.file.mv(resolve('../../', uploadPath), async err => {
     if (err) return res.status(500).send(err);
 
-    // let lockActive = req.body.locked || false;
-    // let lockPassword = req.body.password || 'none';
-
     await saveFile({
       originalName: req.files.file.name,
       uploader: userData.id,
@@ -127,10 +117,6 @@ router.post('/browser', async (req, res) => {
       name: name,
       UploadedAt: new Date(),
       views: 0,
-      // lock: {
-      //   active: lockActive,
-      //   password: lockPassword,
-      // },
     });
 
     let linkPart = userData.domain === undefined || userData.domain === 'none' ?
