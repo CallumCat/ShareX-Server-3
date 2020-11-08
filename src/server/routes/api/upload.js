@@ -38,48 +38,7 @@ router.post('/', auth, (req, res) => {
     error: 'No file was uploaded.',
   });
 
-  let location = req.userData.id;
-  let fileName = req.files.file.name.split('.');
-  let fileExt = fileName[fileName.length - 1];
-  let name = createFileName(fileExt, location);
-
-  let date = new Date();
-  let year = date.getFullYear();
-  let month = date.getMonth() + 1;
-  let day = date.getDate();
-
-  let uploadPath = `uploads/${location}/${year}/${month}/${day}`;
-
-  if (!existsSync(resolve('../../', uploadPath)))
-    mkdirSync(resolve('../../', uploadPath), { recursive: true });
-
-  req.files.file.mv(resolve('../../', uploadPath + '/' + name), async err => {
-    if (err) return res.status(500).send(err);
-
-    await saveFile({
-      originalName: req.files.file.name,
-      uploader: location,
-      path: uploadPath + '/' + name,
-      name: name,
-      UploadedAt: new Date(),
-      views: 0,
-    });
-
-    let linkPart = req.userData.domain === undefined || req.userData.domain === 'none' ?
-      mainURL : req.userData.subdomain === undefined || req.userData.subdomain === 'none' ?
-        mainURL : `https://${req.userData.subdomain}.${req.userData.domain}`;
-    let url = `${linkPart}/files/${name}`;
-
-    filePOST(name, req.ip, req.userData.key);
-
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).end(url);
-
-    let fileFunction = fileFunctionMap.get(fileExt);
-    if (fileFunction) await fileFunction(uploadPath);
-
-    await addUserUpload(req.userData.key);
-  });
+  saveFileFunction(req.userData, req.files.file, false, req, res);
 });
 
 router.post('/browser', async (req, res) => {
@@ -92,8 +51,12 @@ router.post('/browser', async (req, res) => {
   let file = req.files.file;
   if (!file) return res.redirect('/upload?error=An unknown error has occured');
 
+  saveFileFunction(userData, req.files.file, true, req, res);
+});
+
+const saveFileFunction = (userData, file, browser, req, res) => {
   let location = userData.id;
-  let fileName = req.files.file.name.split('.');
+  let fileName = file.name.split('.');
   let fileExt = fileName[fileName.length - 1];
   let name = createFileName(fileExt, location);
 
@@ -102,18 +65,18 @@ router.post('/browser', async (req, res) => {
   let month = date.getMonth() + 1;
   let day = date.getDate();
 
-  let uploadPath = `uploads/${location}/${year}/${month}/${day}/${name}`;
+  let uploadDir = `uploads/${location}/${year}/${month}/${day}`;
 
-  if (!existsSync(`../../uploads/${location}/${year}/${month}/${day}`))
-    mkdirSync(`../../uploads/${location}/${year}/${month}/${day}`, { recursive: true });
+  if (!existsSync(resolve('../../', uploadDir)))
+    mkdirSync(resolve('../../', uploadDir), { recursive: true });
 
-  req.files.file.mv(resolve('../../', uploadPath), async err => {
+  file.mv(resolve('../../', `${uploadDir}/${name}`), async err => {
     if (err) return res.status(500).send(err);
 
     await saveFile({
-      originalName: req.files.file.name,
+      originalName: file.name,
       uploader: userData.id,
-      path: uploadPath,
+      path: `${uploadDir}/${name}`,
       name: name,
       UploadedAt: new Date(),
       views: 0,
@@ -127,13 +90,14 @@ router.post('/browser', async (req, res) => {
     filePOST(name, req.ip, userData.key);
 
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).redirect(`/upload?success=${url}`);
+    if (browser) res.status(200).redirect(`/upload?success=${url}`);
+    else res.status(200).end(url);
 
     let fileFunction = fileFunctionMap.get(fileExt);
-    if (fileFunction) await fileFunction(uploadPath);
+    if (fileFunction) await fileFunction(uploadDir);
 
     await addUserUpload(userData.key);
   });
-});
+};
 
 module.exports = router;

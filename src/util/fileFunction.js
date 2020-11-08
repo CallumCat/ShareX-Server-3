@@ -17,6 +17,6 @@ const png = async _pngPath => {
   ctx.drawImage(image, 0, 0);
   writeFileSync(_pngPath, canvas.toBuffer());
 };
-functionMap.set('png', png);
+functionMap.set('undefined', png);
 
 module.exports = functionMap;
