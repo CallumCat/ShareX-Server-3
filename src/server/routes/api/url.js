@@ -8,12 +8,11 @@ const { Router, json } = require('express');
 const { saveURL, getURL } = require('../../../mongo/functions');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
 const { generateRandomString } = require('../../../util/util');
+const { auth } = require('../../middleware/authentication.js');
 
 const router = Router();
 
 router.use(json());
-
-const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({

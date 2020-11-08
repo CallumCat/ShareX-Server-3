@@ -7,12 +7,11 @@ const { Router, json } = require('express');
 
 const { getFile } = require('../../../mongo/functions');
 const { fileAPIGET } = require('../../../util/logger');
+const { auth } = require('../../middleware/authentication.js');
 
 const router = Router();
 
 router.use(json());
-
-const { auth } = require('../../middleware/authentication.js');
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
@@ -31,7 +30,6 @@ router.get('/:name', auth, async (req, res) => {
   if (fileData === null) return res.status(404).json({
     error: 'File not found.',
   });
-
 
   let returnObj = {
     name: fileData.originalName,

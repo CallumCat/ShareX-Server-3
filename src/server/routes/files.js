@@ -8,7 +8,6 @@ const { existsSync, readFileSync, unlinkSync } = require('fs');
 const { delFile, getFile, addFileView } = require('../../mongo/functions');
 const { fileGET, fileDELETE } = require('../../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
-const mdFile = require('../../util/md.js');
 
 const { highlightAuto } = require('highlight.js');
 const isFileUtf8 = require('is-file-utf8');
@@ -21,23 +20,6 @@ const limiter = rateLimit({
   max: 200,
 });
 router.use(limiter);
-
-// Router.get('/:name', async (req, res) => {
-//   let fileName = req.params.name;
-//   if (!fileName) return res.status(302).redirect('/404');
-
-//   let fileData = await getFile(fileName);
-//   if (fileData === null) return res.status(302).redirect('/404');
-
-//   await addFileView(fileName);
-
-//   let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
-//   if (!existsSync(filePath)) return res.status(302).redirect('/404');
-
-//   fileGET(fileName, req.ip);
-
-//   return res.sendFile(filePath);
-// });
 
 router.get('/:name', async (req, res) => {
   let fileName = req.params.name;

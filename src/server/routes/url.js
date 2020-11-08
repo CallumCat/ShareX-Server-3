@@ -23,12 +23,10 @@ router.get('/:id', async (req, res) => {
     error: 'No URL ID included.',
   });
 
-
   let URLData = await getURL(URLID);
   if (URLData === null) return res.status(404).json({
     error: 'URL not found.',
   });
-
 
   await addURLView(URLID);
 
