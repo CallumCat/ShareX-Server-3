@@ -57,9 +57,8 @@ router.get('/:name', async (req, res) => {
 
   let data = readFileSync(filePath, 'utf8');
   let output = highlightAuto(data).value;
-  output = mdFile(output, fileData.originalName);
 
-  return res.send(output);
+  return res.render('pages/md.ejs', { data: output, title: fileData.originalName });
 });
 
 router.get('/delete/:name', browserAuth, async (req, res) => {
