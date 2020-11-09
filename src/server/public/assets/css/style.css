@@ -65,13 +65,11 @@ body {
 #topnav a:hover {
   background-color: #ddd;
   color: black;
-  border-radius: 5%;
 }
 
 #topnav a.active {
   background-color: #551a8b;
   color: white;
-  border-radius: 10px;
 }
 
 /* files */
