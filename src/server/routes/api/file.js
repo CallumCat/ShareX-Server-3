@@ -5,7 +5,7 @@ const { mainURL } = require('../../../../config.json');
 
 const { Router, json } = require('express');
 
-const { getFile } = require('../../../mongo/functions');
+const { getFile } = require('../../../mongo');
 const { fileAPIGET } = require('../../../util/logger');
 const { auth } = require('../../middleware/authentication.js');
 

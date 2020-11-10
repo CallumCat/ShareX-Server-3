@@ -1,7 +1,7 @@
 const { Router, json, urlencoded } = require('express');
-const { sha256, createKey } = require('../../../util/util');
-const { saveUser } = require('../../../mongo/functions');
-const { userAPIPOST } = require('../../../util/logger');
+const { sha256, createKey } = require('../../../../util');
+const { saveUser } = require('../../../../mongo');
+const { userAPIPOST } = require('../../../../util/logger');
 const router = Router();
 
 router.use(json());

@@ -5,7 +5,7 @@ const { Router } = require('express');
 const { resolve } = require('path');
 const { existsSync, readFileSync, unlinkSync } = require('fs');
 
-const { delFile, getFile, addFileView } = require('../../mongo/functions');
+const { delFile, getFile, addFileView } = require('../../mongo');
 const { fileGET, fileDELETE } = require('../../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
@@ -38,9 +38,10 @@ router.get('/:name', async (req, res) => {
   fileGET(fileName, req.ip);
 
   let data = readFileSync(filePath, 'utf8');
-  let output = highlightAuto(data).value;
 
-  return res.render('pages/md.ejs', { data: output, title: fileData.originalName });
+  return res.render('pages/md.ejs', {
+    data: data, file: fileData, user: null
+  });
 });
 
 router.get('/delete/:name', browserAuth, async (req, res) => {

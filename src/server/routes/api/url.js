@@ -5,9 +5,9 @@ const { mainURL } = require('../../../../config.json');
 
 const { Router, json } = require('express');
 
-const { saveURL, getURL } = require('../../../mongo/functions');
+const { saveURL, getURL } = require('../../../mongo');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
-const { generateRandomString } = require('../../../util/util');
+const { generateRandomString } = require('../../../util');
 const { auth } = require('../../middleware/authentication.js');
 
 const router = Router();

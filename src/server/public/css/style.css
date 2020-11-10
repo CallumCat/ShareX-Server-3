@@ -1,8 +1,4 @@
-@font-face {
-  font-family: CascadiaCode-Regular;
-  src: url('/assets/fonts/CascadiaCode-Regular.otf');
-}
-
+@import url('https://fonts.googleapis.com/css2?family=Recursive:wght@500&display=swap');
 * {
   text-align: center;
   vertical-align: middle;
@@ -10,7 +6,7 @@
 }
 
 body {
-  font-family: "CascadiaCode-Regular";
+  font-family: 'Recursive', sans-serif;
   background: rgb(38, 38, 38);
   margin: 0;
 }

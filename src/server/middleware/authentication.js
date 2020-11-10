@@ -1,11 +1,11 @@
-const { getUserFromKey, getUserFromPassword } = require('../../mongo/functions.js');
-const { sha256 } = require('../../util/util.js');
+const { getUserFromKey, getUserFromPassword } = require('../../mongo/index.js');
+const { sha256 } = require('../../util/index.js');
 
 const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };
 const noKeyorPass = { error: 'No key nor username or password was provided in the headers.' };
 
-async function authentication (req, res, next) {
+async function authentication(req, res, next) {
   let userData;
   if (req.headers.key) {
     // Get userData from key
@@ -27,12 +27,16 @@ async function authentication (req, res, next) {
   next();
 }
 
-async function browserAuthentication (req, res, next) {
+async function browserAuthentication(req, res, next) {
   if (!req.cookies.authentication) return res.redirect('/login');
   let userData = await getUserFromKey(req.cookies.authentication);
   if (!userData) return res.redirect('/login');
+
+  // Make it so you can access userdata everywhere.
   req.userData = userData;
-  return next();
+
+  // Call the function to go to the next one.
+  next();
 }
 
 module.exports.auth = authentication;

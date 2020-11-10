@@ -1,5 +1,5 @@
 const { createHash } = require('crypto');
-const { getUserFromKey } = require('../mongo/functions.js');
+const { getUserFromKey } = require('../mongo/index.js');
 
 module.exports.createKey = async () => {
   let string = this.generateRandomString(40);

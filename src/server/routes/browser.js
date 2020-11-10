@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { browserAuth } = require('../middleware/authentication');
-const { getUserFromKey, getAllFiles } = require('../../mongo/functions');
+const { getUserFromKey, getAllFiles } = require('../../mongo');
 const router = Router();
 
 router.get('/', async (req, res) => {
@@ -10,6 +10,11 @@ router.get('/', async (req, res) => {
   return res.status(200).render('pages/home.ejs', {
     error: error, success: success, user: userData,
   });
+});
+
+router.get('/logout', browserAuth, (req, res) => {
+  res.clearCookie('authentication');
+  return res.redirect('/');
 });
 
 router.get('/login', async (req, res) => {
@@ -39,6 +44,13 @@ router.get('/files', browserAuth, async (req, res) => {
   return res.status(200).render('pages/files.ejs', { user: req.userData, files: fileData, page: p });
 });
 
+router.get('/upload/public', async (req, res) => {
+  let userData = await getUserFromKey(req.cookies.authentication);
+  res.status(200).render('pages/publicupload.ejs', {
+    user: userData, error: req.query.error, success: req.query.success,
+  });
+});
+
 router.get('/upload', browserAuth, (req, res) => res.status(200).render('pages/upload.ejs', {
   user: req.userData, error: req.query.error, success: req.query.success,
 }));
@@ -50,6 +62,25 @@ router.get('/dashboard', browserAuth, (req, res) => res.status(200).render('page
 router.get('/home', (req, res) => res.status(200).render('pages/home.ejs', {
   user: req.userData, error: req.query.error, success: req.query.success,
 }));
+
+router.get('/sxcu', browserAuth, async (req, res) => {
+  let uploader = JSON.stringify({
+    "Version": "13.1.0",
+    "Name": "data.terano.dev - file",
+    "DestinationType": "ImageUploader, TextUploader, FileUploader",
+    "RequestMethod": "POST",
+    "RequestURL": "https://data.terano.dev/api/upload",
+    "Headers": {
+      "key": req.userData.key
+    },
+    "Body": "MultipartFormData",
+    "FileFormName": "file",
+    "URL": "$response$"
+  });
+  res.setHeader('Content-disposition', 'attachment; filename=uploader.sxcu');
+  res.write(uploader, e => { return; });
+  return res.end();
+});
 
 router.get('/*', async (req, res) => res.status(200).render('pages/404.ejs', {
   user: await getUserFromKey(req.cookies.authentication),

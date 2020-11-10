@@ -7,9 +7,9 @@ const { Router } = require('express');
 const { existsSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 
-const { addUserUpload, saveFile, getUserFromKey } = require('../../../mongo/functions');
+const { addUserUpload, saveFile, getUserFromKey } = require('../../../mongo');
 const { filePOST } = require('../../../util/logger.js');
-const { generateRandomString } = require('../../../util/util');
+const { generateRandomString } = require('../../../util');
 const fileFunctionMap = require('../../../util/fileFunction.js');
 
 const router = Router();
@@ -90,7 +90,7 @@ const saveFileFunction = (userData, file, browser, req, res) => {
     filePOST(name, req.ip, userData.key);
 
     res.setHeader('Content-Type', 'application/json');
-    if (browser) res.status(200).redirect(`/upload?success=${url}`);
+    if (browser) res.status(200).redirect(`/upload${userData.id == 'public' ? '/public' : ''}?success=${url}`);
     else res.status(200).end(url);
 
     let fileFunction = fileFunctionMap.get(fileExt);

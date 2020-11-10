@@ -13,10 +13,8 @@ const express = require('express');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 
-const database = require('../mongo/functions.js');
+const database = require('../mongo/index.js');
 database.init();
-
-console.log(require('../util/logo/index.js'));
 
 // Create the server
 let app = express();

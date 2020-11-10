@@ -1,6 +1,6 @@
 const { Router, json, urlencoded } = require('express');
-const { sha256 } = require('../../../util/util');
-const { getUserFromPassword } = require('../../../mongo/functions');
+const { sha256 } = require('../../../../util');
+const { getUserFromPassword } = require('../../../../mongo');
 const router = Router();
 
 router.use(json());
