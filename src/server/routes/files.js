@@ -9,7 +9,6 @@ const { delFile, getFile, addFileView } = require('../../mongo');
 const { fileGET, fileDELETE } = require('../../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
-const { highlightAuto } = require('highlight.js');
 const isFileUtf8 = require('is-file-utf8');
 
 const router = Router();
@@ -40,7 +39,7 @@ router.get('/:name', async (req, res) => {
   let data = readFileSync(filePath, 'utf8');
 
   return res.render('pages/md.ejs', {
-    data: data, file: fileData, user: null
+    data: data, file: fileData, user: null,
   });
 });
 

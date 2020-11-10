@@ -5,7 +5,7 @@ const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };
 const noKeyorPass = { error: 'No key nor username or password was provided in the headers.' };
 
-async function authentication(req, res, next) {
+async function authentication (req, res, next) {
   let userData;
   if (req.headers.key) {
     // Get userData from key
@@ -27,7 +27,7 @@ async function authentication(req, res, next) {
   next();
 }
 
-async function browserAuthentication(req, res, next) {
+async function browserAuthentication (req, res, next) {
   if (!req.cookies.authentication) return res.redirect('/login');
   let userData = await getUserFromKey(req.cookies.authentication);
   if (!userData) return res.redirect('/login');

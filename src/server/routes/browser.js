@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { browserAuth } = require('../middleware/authentication');
 const { getUserFromKey, getAllFiles } = require('../../mongo');
+const { log } = require('../../util/logger');
 const router = Router();
 
 router.get('/', async (req, res) => {
@@ -63,22 +64,22 @@ router.get('/home', (req, res) => res.status(200).render('pages/home.ejs', {
   user: req.userData, error: req.query.error, success: req.query.success,
 }));
 
-router.get('/sxcu', browserAuth, async (req, res) => {
+router.get('/sxcu', browserAuth, (req, res) => {
   let uploader = JSON.stringify({
-    "Version": "13.1.0",
-    "Name": "data.terano.dev - file",
-    "DestinationType": "ImageUploader, TextUploader, FileUploader",
-    "RequestMethod": "POST",
-    "RequestURL": "https://data.terano.dev/api/upload",
-    "Headers": {
-      "key": req.userData.key
+    Version: '13.1.0',
+    Name: 'data.terano.dev - file',
+    DestinationType: 'ImageUploader, TextUploader, FileUploader',
+    RequestMethod: 'POST',
+    RequestURL: 'https://data.terano.dev/api/upload',
+    Headers: {
+      key: req.userData.key,
     },
-    "Body": "MultipartFormData",
-    "FileFormName": "file",
-    "URL": "$response$"
+    Body: 'MultipartFormData',
+    FileFormName: 'file',
+    URL: '$response$',
   });
   res.setHeader('Content-disposition', 'attachment; filename=uploader.sxcu');
-  res.write(uploader, e => { return; });
+  res.write(uploader, e => { log(e); });
   return res.end();
 });
 
