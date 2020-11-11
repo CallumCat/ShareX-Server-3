@@ -2,7 +2,7 @@
     "name": "sharex-server",
     "version": "1.0.2",
     "description": "This is a ShareX server that I made.",
-    "main": "./src/server/sharex.js",
+    "main": "./src/app.js",
     "dependencies": {
         "body-parser": "^1.19.0",
         "colors": "^1.4.0",
