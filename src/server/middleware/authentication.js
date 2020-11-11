@@ -4,10 +4,12 @@ const { sha256 } = require('../../util/index.js');
 const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };
 const noKeyorPass = { error: 'No key nor username or password was provided in the headers.' };
+const keyNotAllowed = { error: 'You cannot use this key in this endpoint.' };
 
-async function authentication (req, res, next) {
+async function authentication(req, res, next) {
   let userData;
   if (req.headers.key) {
+    if (req.headers.key == 'public') return res.status(401).json(keyNotAllowed);
     // Get userData from key
     userData = await getUserFromKey(req.headers.key);
     if (userData === null) return res.status(401).json(incorrectKey);
@@ -27,7 +29,7 @@ async function authentication (req, res, next) {
   next();
 }
 
-async function browserAuthentication (req, res, next) {
+async function browserAuthentication(req, res, next) {
   if (!req.cookies.authentication) return res.redirect('/login');
   let userData = await getUserFromKey(req.cookies.authentication);
   if (!userData) return res.redirect('/login');
