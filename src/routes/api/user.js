@@ -3,8 +3,8 @@
 */
 const { Router, json, urlencoded } = require('express');
 const { auth } = require('../../middleware/authentication');
-const { userAPIGET, userAPIGETUPLOADS } = require('../../../util/logger');
-const { getAllFiles } = require('../../../mongo');
+const { userAPIGET, userAPIGETUPLOADS } = require('../../util/logger');
+const { getAllFiles } = require('../../mongo');
 const router = Router();
 
 router.use(json());

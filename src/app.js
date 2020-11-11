@@ -1,7 +1,7 @@
 /*
     The ShareX Server main file.
 */
-const config = require('../../config.json');
+const config = require('./config.json');
 let PORT = config.port || 1234;
 
 // Fancy stuff
@@ -19,7 +19,7 @@ const limiter = rateLimit({
   max: 60 * 15,
 });
 
-const database = require('../mongo/index.js');
+const database = require('./mongo/index.js');
 database.init();
 
 // Create the server

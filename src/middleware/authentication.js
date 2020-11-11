@@ -1,5 +1,5 @@
-const { getUserFromKey, getUserFromPassword } = require('../../mongo/index.js');
-const { sha256 } = require('../../util/index.js');
+const { getUserFromKey, getUserFromPassword } = require('../mongo');
+const { sha256 } = require('../util');
 
 const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };

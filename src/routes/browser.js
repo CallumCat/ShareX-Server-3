@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { browserAuth } = require('../middleware/authentication');
-const { getUserFromKey, getAllFiles } = require('../../mongo');
-const { log } = require('../../util/logger');
+const { getUserFromKey, getAllFiles } = require('../mongo');
+const { log } = require('../util/logger');
 const router = Router();
 
 router.get('/', async (req, res) => {
