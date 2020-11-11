@@ -3,13 +3,12 @@
 ## About
 
 This is a ShareX server that I made.
-Written in around seven weeks so far.
   
 ---
 
 ## Requirements to run
 
-- A DB properly configured
+- MonoDB properly configured
 
 - Domain name or IP pointing to the server
 
@@ -54,7 +53,6 @@ Written in around seven weeks so far.
   "maxFileSize": 9007199254740991,  
   "connectURI": "mongodb://localhost/sharex",  
   "mainURL": "https://example.com",  
-  "token": "[DISCORD BOT TOKEN]",  
   "database": "mongo",
   "mongo": {
     "connectURI": "mongodb://localhost/sharex",
