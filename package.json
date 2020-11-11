@@ -26,8 +26,8 @@
     },
     "scripts": {
         "lint": "eslint . --fix",
-        "test": "cd src/server && nodemon sharex.js",
-        "start": "cd src/server && node sharex.js"
+        "test": "cd src && nodemon app.js",
+        "start": "cd src && node app.js"
     },
     "author": "Million900o",
     "license": "ISC",

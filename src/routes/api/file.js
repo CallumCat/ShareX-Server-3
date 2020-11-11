@@ -1,12 +1,12 @@
 /*
     The router for creating a short url
 */
-const { mainURL } = require('../../../../config.json');
+const { mainURL } = require('../../config.json');
 
 const { Router, json } = require('express');
 
-const { getFile } = require('../../../mongo');
-const { fileAPIGET } = require('../../../util/logger');
+const { getFile } = require('../../mongo');
+const { fileAPIGET } = require('../../util/logger');
 const { auth } = require('../../middleware/authentication.js');
 
 const router = Router();
