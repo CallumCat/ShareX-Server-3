@@ -7,6 +7,13 @@ const router = Router();
 router.use(json());
 router.use(urlencoded({ extended: false }));
 
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 5,
+});
+router.use(limiter);
+
 router.get('/', auth, (req, res) => {
   let returnObject = {
     name: req.userData.name,

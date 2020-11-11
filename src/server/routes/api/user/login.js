@@ -6,6 +6,13 @@ const router = Router();
 router.use(json());
 router.use(urlencoded({ extended: false }));
 
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 10,
+});
+router.use(limiter);
+
 router.post('/', async (req, res) => {
   let username = req.body.username;
   let password = req.body.password;

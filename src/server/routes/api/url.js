@@ -35,17 +35,14 @@ router.get('/:id', auth, async (req, res) => {
     error: 'No URL ID provided.',
   });
 
-
   let urlData = await getURL(urlID);
   if (urlData === null) return res.status(400).json({
     error: 'URL not found.',
   });
 
-
   if (urlData.uploader !== req.userData.name && req.userData.owner !== true) return res.status(401).json({
     error: 'You do not have access.',
   });
-
 
   let returnObj = {
     id: urlData.id,
