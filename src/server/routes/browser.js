@@ -79,7 +79,7 @@ router.get('/sxcu', browserAuth, (req, res) => {
     URL: '$response$',
   });
   res.setHeader('Content-disposition', 'attachment; filename=uploader.sxcu');
-  res.write(uploader, e => { log(e); });
+  res.write(uploader, e => { if (e) log(e); });
   return res.end();
 });
 
