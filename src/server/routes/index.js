@@ -9,10 +9,11 @@ const api = {};
 api.user = {};
 api.user.login = require('./api/user/login');
 api.user.signup = require('./api/user/signup');
-api.user.dashboard = require('./api/user/manage');
+api.user.manage = require('./api/user/manage');
 api.file = require('./api/file');
 api.upload = require('./api/upload');
 api.url = require('./api/url');
+api.userPath = require('./api/user');
 
 /*
     GET requests
@@ -32,12 +33,13 @@ let setup = app => {
     // Users
     app.use('/api/user/login', api.user.login);
     app.use('/api/user/signup', api.user.signup);
-    app.use('/api/user/signup', api.user.dashboard);
+    app.use('/api/user/manage', api.user.manage);
 
     // Files/URLs API
     app.use('/api/file', api.file);
     app.use('/api/upload', api.upload);
     app.use('/api/url', api.url);
+    app.use('/api/user', api.userPath);
 
     // Files/URLs
     app.use('/url', URL);
