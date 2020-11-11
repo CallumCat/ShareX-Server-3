@@ -1,16 +1,16 @@
 /*
     The router for uploading a file
 */
-const { mainURL } = require('../../../../config.json');
+const { mainURL } = require('../../config.json');
 
 const { Router } = require('express');
 const { existsSync, mkdirSync } = require('fs');
 const { resolve } = require('path');
 
-const { addUserUpload, saveFile, getUserFromKey } = require('../../../mongo');
-const { filePOST } = require('../../../util/logger.js');
-const { generateRandomString } = require('../../../util');
-const fileFunctionMap = require('../../../util/fileFunction.js');
+const { addUserUpload, saveFile, getUserFromKey } = require('../../mongo');
+const { filePOST } = require('../../util/logger.js');
+const { generateRandomString } = require('../../util');
+const fileFunctionMap = require('../../util/fileFunction.js');
 
 const router = Router();
 
@@ -67,10 +67,10 @@ const saveFileFunction = (userData, file, browser, req, res) => {
 
   let uploadDir = `uploads/${location}/${year}/${month}/${day}`;
 
-  if (!existsSync(resolve('../../', uploadDir)))
-    mkdirSync(resolve('../../', uploadDir), { recursive: true });
+  if (!existsSync(resolve('../', uploadDir)))
+    mkdirSync(resolve('../', uploadDir), { recursive: true });
 
-  file.mv(resolve('../../', `${uploadDir}/${name}`), async err => {
+  file.mv(resolve('../', `${uploadDir}/${name}`), async err => {
     if (err) return res.status(500).send(err);
 
     await saveFile({

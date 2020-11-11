@@ -5,8 +5,8 @@ const { Router } = require('express');
 const { resolve } = require('path');
 const { existsSync, readFileSync, unlinkSync } = require('fs');
 
-const { delFile, getFile, addFileView } = require('../../mongo');
-const { fileGET, fileDELETE } = require('../../util/logger');
+const { delFile, getFile, addFileView } = require('../mongo');
+const { fileGET, fileDELETE } = require('../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
 const isFileUtf8 = require('is-file-utf8');
@@ -29,7 +29,7 @@ router.get('/:name', async (req, res) => {
 
   await addFileView(fileName);
 
-  let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
+  let filePath = resolve(`${__dirname}/../../${fileData.path}`);
   if (!existsSync(filePath)) return res.status(200).render('pages/404.ejs', { user: null, error: 'File Not Found', success: null });
 
   if (!await isFileUtf8(filePath)) return res.sendFile(filePath);
@@ -53,7 +53,7 @@ router.get('/delete/:name', browserAuth, async (req, res) => {
   if (fileData.uploader !== req.userData.id && !req.userData.owner)
     return res.status(401).redirect('/?error=You do not have permissions to do this.');
 
-  let filePath = resolve(`${__dirname}/../../../${fileData.path}`);
+  let filePath = resolve(`${__dirname}/../../${fileData.path}`);
   if (!existsSync(filePath))
     return res.status(401).redirect('/?error=File does not exist.');
 

@@ -1,13 +1,13 @@
 /*
     The router for creating a short url
 */
-const { mainURL } = require('../../../../config.json');
+const { mainURL } = require('../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
-const { saveURL, getURL } = require('../../../mongo');
-const { urlAPIGET, urlPOST } = require('../../../util/logger');
-const { generateRandomString } = require('../../../util');
+const { saveURL, getURL } = require('../../mongo');
+const { urlAPIGET, urlPOST } = require('../../util/logger');
+const { generateRandomString } = require('../../util');
 const { auth } = require('../../middleware/authentication.js');
 
 const router = Router();

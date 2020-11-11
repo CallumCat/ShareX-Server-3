@@ -3,8 +3,8 @@
 */
 const { Router, json, urlencoded } = require('express');
 
-const { getUserFromPassword } = require('../../../../mongo');
-const { sha256 } = require('../../../../util');
+const { getUserFromPassword } = require('../../../mongo');
+const { sha256 } = require('../../../util');
 
 const router = Router();
 

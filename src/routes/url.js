@@ -4,8 +4,8 @@
 const { Router } = require('express');
 const { resolve } = require('path');
 
-const { addURLView, getURL, delURL } = require('../../mongo');
-const { urlGET, urlDELETE } = require('../../util/logger');
+const { addURLView, getURL, delURL } = require('../mongo');
+const { urlGET, urlDELETE } = require('../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
 const router = Router();
