@@ -28,7 +28,7 @@ router.use(fileUpload());
 
 const createFileName = (fileExt, loc) => {
   let nFN = `${generateRandomString(15)}.${fileExt}`;
-  let fileLocation = `./uploads/${loc}/${nFN}.${fileExt}`;
+  let fileLocation = `./uploads/${loc}/${nFN}`;
   if (existsSync(fileLocation)) return createFileName(fileExt, loc);
   return nFN;
 };

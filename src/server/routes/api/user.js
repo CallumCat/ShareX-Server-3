@@ -1,3 +1,6 @@
+/*
+    The router for user info
+*/
 const { Router, json, urlencoded } = require('express');
 const { auth } = require('../../middleware/authentication');
 const { userAPIGET, userAPIGETUPLOADS } = require('../../../util/logger');
@@ -23,7 +26,7 @@ router.get('/', auth, (req, res) => {
     id: req.userData.id,
     CreatedAt: new Date(req.userData.CreatedAt).toLocaleDateString(),
     subdomain: req.userData.subdomain,
-    domain: req.userData.subdomain
+    domain: req.userData.subdomain,
   };
 
   userAPIGET(req.userData.name, req.userData.key, req.ip);
@@ -42,7 +45,7 @@ router.get('/uploads', auth, async (req, res) => {
       uploader: req.userData.name,
       path: e.path,
       views: e.views,
-      originalName: e.originalName
+      originalName: e.originalName,
     });
   });
 

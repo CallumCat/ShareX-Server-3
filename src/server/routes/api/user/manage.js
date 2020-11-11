@@ -1,7 +1,10 @@
+/*
+    The router for user management
+*/
 const { Router, json, urlencoded } = require('express');
-const { sha256 } = require('../../../../util');
-const { getUserFromPassword } = require('../../../../mongo');
-const { browserAuth } = require('../../../middleware/authentication');
+
+// Const { browserAuth } = require('../../../middleware/authentication');
+
 const router = Router();
 
 router.use(json());
@@ -14,8 +17,8 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-router.post('/', browserAuth, async (req, res) => {
-  // TODO
-});
+// Router.post('/', browserAuth, async (req, res) => {
+//   // TODO
+// });
 
 module.exports = router;

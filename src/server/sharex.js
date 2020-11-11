@@ -13,6 +13,12 @@ const express = require('express');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
 
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60 * 15,
+});
+
 const database = require('../mongo/index.js');
 database.init();
 
@@ -27,6 +33,7 @@ app.use(compression());
 app.use(express.static(`${__dirname}/public/`));
 app.use(express.static(`${__dirname}/uploads/`));
 app.use(cookieParser());
+app.use(limiter);
 
 // Router
 require('./routes').setup(app);

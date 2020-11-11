@@ -1,11 +1,23 @@
+/*
+    The router for user sign up
+*/
 const { Router, json, urlencoded } = require('express');
-const { sha256, createKey } = require('../../../../util');
+
 const { saveUser } = require('../../../../mongo');
 const { userAPIPOST } = require('../../../../util/logger');
+const { sha256, createKey } = require('../../../../util');
+
 const router = Router();
 
 router.use(json());
 router.use(urlencoded({ extended: false }));
+
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 25,
+});
+router.use(limiter);
 
 router.post('/', async (req, res) => {
   let username = req.body.username;
