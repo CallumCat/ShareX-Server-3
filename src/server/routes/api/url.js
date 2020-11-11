@@ -3,7 +3,7 @@ The router for creating a short url
 */
 const { mainURL } = require('../../../../config.json');
 
-const { Router, json } = require('express');
+const { Router, json, urlencoded } = require('express');
 
 const { saveURL, getURL } = require('../../../mongo');
 const { urlAPIGET, urlPOST } = require('../../../util/logger');
@@ -13,6 +13,7 @@ const { auth } = require('../../middleware/authentication.js');
 const router = Router();
 
 router.use(json());
+router.use(urlencoded({ extended: true }));
 
 const rateLimit = require('express-rate-limit');
 const limiter = rateLimit({
