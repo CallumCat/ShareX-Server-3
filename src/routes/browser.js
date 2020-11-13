@@ -57,7 +57,7 @@ router.get('/upload', browserAuth, (req, res) => res.status(200).render('pages/u
 }));
 
 router.get('/dashboard', browserAuth, (req, res) => res.status(200).render('pages/dashboard.ejs', {
-  user: req.userData, error: req.query.error, success: req.query.success,
+  user: req.userData, error: req.query.error, success: req.query.success, page: req.query.page,
 }));
 
 router.get('/home', (req, res) => res.status(200).render('pages/home.ejs', {

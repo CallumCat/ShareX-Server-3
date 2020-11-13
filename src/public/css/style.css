@@ -108,6 +108,8 @@ a.Link:hover {
 .nextPage {
   border: none;
   border-radius: 5px;
+  margin-right: 2px;
+  margin-left: 2px;
   background: rgb(27, 27, 27);
   color: white;
   padding: 7px;
@@ -182,4 +184,100 @@ form.login {
 
 input {
   outline: none;
+}
+
+
+.userInfo {
+  display: inline-block;
+  min-width: 420px;
+  width: fit-content;
+}
+
+.userInfo div {
+  margin: 10px 10px 10px 10px;
+  text-align: left;
+}
+
+.userDiv {
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: #222222;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.user {
+  padding: 10px;
+  border-radius: 5px;
+  background: #4e4d4d;
+}
+
+.popup {
+  position: fixed;
+  z-index: 1; 
+  padding-top: 200px; 
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  color: white;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popupBG {
+  border-radius: 5px;
+  margin: auto;
+  text-align: center;
+  background-color: #313131;
+  max-width: 420px;
+  min-height: 300px;
+  height: fit-content;
+}
+
+.dashboardSpace {
+  height: 1px;
+}
+
+.dashboardOption {
+  margin-top: 10px;
+}
+
+.dashboardBack {
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background:#313131;
+  color: white;
+  padding: 7px;
+  text-decoration: none;
+}
+
+
+.dashboardBack:hover {
+ background: #202020;
+  padding: 8px;
+}
+
+.pagesDiv {
+  max-width: 400px;
+  text-align: center;
+}
+
+.pages {
+  /* margin: 0 auto; */
+  display: inline-flex;
+  max-width: 400px;
+  text-align: center;
+}
+
+.dangerOptions {
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-right: 2px;
+  margin-left: 2px;
+  color: white;
+  padding: 7px;
+  text-decoration: none;
 }

@@ -24,7 +24,7 @@ router.get('/', auth, (req, res) => {
     uploads: req.userData.uploads,
     redirects: req.userData.redirects,
     id: req.userData.id,
-    CreatedAt: new Date(req.userData.CreatedAt).toLocaleDateString(),
+    createdAt: new Date(req.userData.createdAt).toLocaleString(),
     subdomain: req.userData.subdomain,
     domain: req.userData.subdomain,
   };
@@ -46,6 +46,7 @@ router.get('/uploads', auth, async (req, res) => {
       path: e.path,
       views: e.views,
       originalName: e.originalName,
+      uploadedAt: new Date(e.UploadedAt).toLocaleString(),
     });
   });
 

@@ -69,6 +69,20 @@ module.exports.delURL = async ID => {
 
 let UserModel = require('./models/user.js');
 
+module.exports.setUserUsername = async (key, username) => {
+  let userData = await this.getUserFromKey(key);
+  if (!userData) return null;
+  await UserModel.updateOne(userData, { name: username });
+  return true;
+};
+
+module.exports.setUserPassword = async (key, password) => {
+  let userData = await this.getUserFromKey(key);
+  if (!userData) return null;
+  await UserModel.updateOne(userData, { password: password });
+  return true;
+};
+
 module.exports.setUserDomain = async (key, domain) => {
   let userData = await this.getUserFromKey(key);
   if (!userData) return null;
@@ -96,6 +110,15 @@ module.exports.addUserRedirect = async key => {
   if (!userData) return null;
   let newRedirect = userData.redirect + 1;
   await UserModel.updateOne(userData, { redirect: newRedirect });
+  return true;
+};
+
+module.exports.addUserUploadSize = async (key, kilos) => {
+  let userData = await this.getUserFromKey(key);
+  if (!userData) return null;
+  if (userData.uploadSize === undefined) userData.uploadSize = 0;
+  let newSize = userData.uploadSize + kilos;
+  await UserModel.updateOne(userData, { uploadSize: newSize });
   return true;
 };
 

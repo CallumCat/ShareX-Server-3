@@ -37,7 +37,7 @@ router.get('/:name', auth, async (req, res) => {
     link: `${mainURL}/files/${fileData.name}`,
     views: fileData.views,
     uploader: fileData.uploader,
-    UploadedAt: fileData.UploadedAt,
+    uploadedAt: new Date(fileData.UploadedAt).toLocaleString(),
     lock: fileData.lock.active,
   };
 

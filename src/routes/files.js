@@ -3,13 +3,14 @@
 */
 const { Router } = require('express');
 const { resolve } = require('path');
-const { existsSync, readFileSync, unlinkSync } = require('fs');
+const { existsSync, readFileSync, unlinkSync, statSync } = require('fs');
 
-const { delFile, getFile, addFileView } = require('../mongo');
-const { fileGET, fileDELETE } = require('../util/logger');
+const { delFile, getFile, addFileView, getAllFiles, addUserUploadSize } = require('../mongo');
+const { fileGET, fileDELETE, filesALLGET } = require('../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
 const isFileUtf8 = require('is-file-utf8');
+require('express-zip');
 
 const router = Router();
 
@@ -19,6 +20,31 @@ const limiter = rateLimit({
   max: 200,
 });
 router.use(limiter);
+
+function addToArray (obj, arr) {
+  if (!arr.some(e => e.name === obj.name)) { return arr.push(obj); } else {
+    let objNameArray = obj.name.split('.');
+    let fileName = objNameArray.slice(0, objNameArray.length - 1).join(' ');
+    if (fileName.includes('_')) {
+      let num = parseInt(fileName.split('_')[fileName.split('_').length - 1]);
+      fileName = `${fileName.split('_').slice(0, fileName.split('_').length - 1)}_${num + 1}`;
+    } else { fileName = `${fileName}_1`; }
+    let fileExt = objNameArray[objNameArray.length - 1];
+    obj.name = `${fileName}.${fileExt}`;
+    return addToArray(obj, arr);
+  }
+}
+
+router.get('/download', browserAuth, async (req, res) => {
+  let files = await getAllFiles(req.userData.id);
+  let fileArray = [];
+  files.forEach(e => {
+    let obj = { path: resolve(`${__dirname}/../../${e.path}`), name: e.originalName };
+    addToArray(obj, fileArray);
+  });
+  filesALLGET(req.userData.key, req.ip);
+  return res.zip(fileArray);
+});
 
 router.get('/:name', async (req, res) => {
   let fileName = req.params.name;
@@ -57,7 +83,8 @@ router.get('/delete/:name', browserAuth, async (req, res) => {
   if (!existsSync(filePath))
     return res.status(401).redirect('/?error=File does not exist.');
 
-  delFile(fileName);
+  await addUserUploadSize(req.userData.key, statSync(filePath).size / 1024)
+  await delFile(fileName);
   unlinkSync(filePath);
 
   res.status(200).redirect('/?success=Successfully deleted the file.');

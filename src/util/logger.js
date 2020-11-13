@@ -36,6 +36,12 @@ module.exports.fileAPIGET = async (name, ip) => {
   console.log(msg);
 };
 
+module.exports.filesALLGET = async (key, ip)  => {
+  ip = await parseIP(ip);
+  let msg = `${'[GET]'.green} ${'SENT ALL FILES'.bgMagenta.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
+  console.log(msg);
+}
+
 module.exports.fileGET = async (name, ip) => {
   ip = await parseIP(ip);
   let msg = `${'[GET]'.green} ${'SENT FILE'.bgMagenta.black} ${name.toString().bgGreen.black} ${ip.toString().bgWhite.black}`;

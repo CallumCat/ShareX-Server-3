@@ -3,7 +3,7 @@
 */
 const { Router, json, urlencoded } = require('express');
 
-const { saveUser } = require('../../../mongo');
+const { saveUser, getUserFromName } = require('../../../mongo');
 const { userAPIPOST } = require('../../../util/logger');
 const { sha256, createKey } = require('../../../util');
 
@@ -29,18 +29,21 @@ router.post('/', async (req, res) => {
   if (!username || !password)
     return res.redirect('/signup?error=Please include a username and password');
 
+  let userCheck = await getUserFromName(username);
+  if (userCheck) return res.redirect('/signup?error=User with that username already exists');
+
   password = sha256(password);
 
   let userObject = {
     key: await createKey(),
     name: username,
     password: password,
-    owner: false,
+    userType: 'default',
     uploads: 0,
     redirects: 0,
     discord: 'none',
     id: Math.floor(Math.random() * 10000000),
-    CreatedAt: new Date(),
+    createdAt: new Date(),
     subdomain: 'none',
     domain: 'none',
   };
@@ -50,7 +53,7 @@ router.post('/', async (req, res) => {
   userAPIPOST(userData.name, userData.key, req.ip);
 
   res.cookie('authentication', userData.key, { expire: 360000 + Date.now() });
-  return res.redirect('/home');
+  return res.redirect('/dashboard');
 });
 
 module.exports = router;
