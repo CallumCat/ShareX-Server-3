@@ -1,11 +1,7 @@
 # Things I need to do
 
-1. Add comments
+1. Redirects page like files page
 
-2. Finish dashboard.ejs
+2. css update for pages
 
-3. password verification
-
-4. delete user account
-
-5. delete all files
+3. file storage in nodes

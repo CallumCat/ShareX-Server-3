@@ -19,6 +19,11 @@
   </div>
 
   <div class="files">
+    <% if (files.length < 1) { %>
+      <div>
+        <a class="nextPage" style="display: flex;" title="Upload Files" href="/upload">You have no files uploaded. Maybe go and uploads some.</a>
+      </div>
+    <% } %> 
     <% let i = 0; %>
     <% files.forEach(e => { %>
     <% i++ %>

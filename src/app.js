@@ -6,6 +6,8 @@ let PORT = config.port || 1234;
 
 // Fancy stuff
 require('colors');
+const { warn, log } = require('./util/logger');
+const fs = require('fs');
 
 const express = require('express');
 
@@ -42,3 +44,21 @@ require('./routes').setup(app);
 app.listen(PORT, () => {
   console.log('ExpressJS server running on port: '.green + PORT.toString().white);
 });
+
+setInterval(() => {
+  fs.readdir('./tmp', (err, files) => {
+    if (err) throw err;
+    if (files.length === 0) return;
+    log('Attempting to Delete', files.length, 'Temperary files. Currently:', new Date().toLocaleString());
+    files.forEach(e => {
+      fs.stat(`./tmp/${e}`, (err2, stats) => {
+        if (err2) throw err2;
+        if (stats.mtimeMs > 1000 * 60 * 60)
+          fs.unlink(`./tmp/${e}`, err3 => {
+            if (err3) throw err3;
+            warn('Deleted Temperary File:', e);
+          });
+      });
+    });
+  });
+}, 1000 * 60 * 60);

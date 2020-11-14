@@ -1,5 +1,5 @@
-const { getUserFromKey, getUserFromPassword } = require('../mongo');
-const { sha256 } = require('../util');
+const { getUserFromName, getUserFromKey } = require('../mongo');
+const { compare } = require('bcrypt');
 
 const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };
@@ -14,10 +14,9 @@ async function authentication (req, res, next) {
     userData = await getUserFromKey(req.headers.key);
     if (userData === null) return res.status(401).json(incorrectKey);
   } else if (req.headers.username && req.headers.password) {
-    // Get userData from username && password
-    let password = sha256(req.headers.password);
-    userData = await getUserFromPassword(req.headers.username, password);
-    if (userData === null) return res.status(401).json(incorrectPass);
+    userData = await getUserFromName(req.headers.username);
+    let passwordsMatch = await compare(req.headers.password, userData.password);
+    if (!passwordsMatch) return res.status(401).json(incorrectPass);
   } else {
     return res.status(401).json(noKeyorPass);
   }

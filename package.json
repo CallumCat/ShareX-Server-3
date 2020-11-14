@@ -4,6 +4,7 @@
     "description": "This is a ShareX server that I made.",
     "main": "./src/app.js",
     "dependencies": {
+        "bcrypt": "^5.0.0",
         "colors": "^1.4.0",
         "compression": "^1.7.4",
         "cookie-parser": "^1.4.5",

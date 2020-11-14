@@ -3,9 +3,10 @@
 */
 const { Router, json, urlencoded } = require('express');
 
-const { delFile, getUserFromPassword, setUserPassword, setUserUsername, setUserSubDomain, getAllFiles, delUser, addUserUploadSize } = require('../../../mongo');
+const { delFile, addUserUpload, setUserPassword, setUserUsername,
+  setUserSubDomain, getAllFiles, delUser, addUserUploadSize } = require('../../../mongo');
 const { browserAuth } = require('../../../middleware/authentication');
-const { sha256 } = require('../../../util');
+const { compare, hash } = require('bcrypt');
 const { resolve } = require('path');
 const { unlinkSync, existsSync } = require('fs');
 
@@ -26,13 +27,13 @@ router.post('/password', browserAuth, async (req, res) => {
   let newPass = req.body.newPwd;
   let newPassCheck = req.body.newPwdCheck;
 
-  let userCheck = await getUserFromPassword(req.userData.name, sha256(currentPass));
+  let userCheck = await compare(currentPass, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=password&error=Your password was incorrect');
 
   if (newPass !== newPassCheck)
     return res.redirect('/dashboard?page=password&error=Passwords did not match');
 
-  await setUserPassword(req.userData.key, sha256(newPass));
+  await setUserPassword(req.userData.key, await hash(newPass, 13));
 
   return res.redirect('/dashboard?page=password&success=Password updated successfully');
 });
@@ -41,7 +42,7 @@ router.post('/username', browserAuth, async (req, res) => {
   let password = req.body.password;
   let username = req.body.newUsr;
 
-  let userCheck = await getUserFromPassword(req.userData.name, sha256(password));
+  let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=username&error=Your password was incorrect');
 
   await setUserUsername(req.userData.key, username);
@@ -53,7 +54,7 @@ router.post('/subdomain', browserAuth, async (req, res) => {
   let password = req.body.password;
   let subdomain = req.body.subdomain;
 
-  let userCheck = await getUserFromPassword(req.userData.name, sha256(password));
+  let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=subdomain&error=Your password was incorrect');
 
   await setUserSubDomain(req.userData.key, subdomain);
@@ -66,7 +67,7 @@ router.post('/delete/files', browserAuth, async (req, res) => {
   let string = req.body.str;
   let stringCheck = req.body.strCheck;
 
-  let userCheck = await getUserFromPassword(req.userData.name, sha256(password));
+  let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=files&error=Your password was incorrect');
 
   if (string !== stringCheck) return res.redirect('/dashboard?page=files&error=You did not type the correct string');
@@ -79,7 +80,8 @@ router.post('/delete/files', browserAuth, async (req, res) => {
       unlinkSync(filePath);
   });
 
-  await addUserUploadSize(req.userData.key, -req.userData.uploadSize)
+  await addUserUploadSize(req.userData.key, -req.userData.uploadSize);
+  await addUserUpload(req.userData.key, -req.userData.uploads);
 
   res.redirect('/dashboard?page=files&success=Files successfully deleted');
 });
@@ -92,7 +94,7 @@ router.post('/delete/account', browserAuth, async (req, res) => {
 
   if (username !== req.userData.name) return res.redirect('/dashboard?page=account&error=Incorrect username given');
 
-  let userCheck = await getUserFromPassword(req.userData.name, sha256(password));
+  let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=account&error=Your password was incorrect');
 
   if (string !== stringCheck) return res.redirect('/dashboard?page=account&error=You did not type the correct string');

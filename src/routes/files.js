@@ -5,7 +5,7 @@ const { Router } = require('express');
 const { resolve } = require('path');
 const { existsSync, readFileSync, unlinkSync, statSync } = require('fs');
 
-const { delFile, getFile, addFileView, getAllFiles, addUserUploadSize } = require('../mongo');
+const { delFile, getFile, addFileView, getAllFiles, addUserUploadSize, addUserUpload } = require('../mongo');
 const { fileGET, fileDELETE, filesALLGET } = require('../util/logger');
 const { browserAuth } = require('../middleware/authentication.js');
 
@@ -43,7 +43,7 @@ router.get('/download', browserAuth, async (req, res) => {
     addToArray(obj, fileArray);
   });
   filesALLGET(req.userData.key, req.ip);
-  return res.zip(fileArray);
+  return res.zip(fileArray, `files-${new Date().toLocaleDateString().replace(/\//g, '-')}.zip`);
 });
 
 router.get('/:name', async (req, res) => {
@@ -83,7 +83,8 @@ router.get('/delete/:name', browserAuth, async (req, res) => {
   if (!existsSync(filePath))
     return res.status(401).redirect('/?error=File does not exist.');
 
-  await addUserUploadSize(req.userData.key, statSync(filePath).size / 1024)
+  await addUserUploadSize(req.userData.key, -(statSync(filePath).size / 1024));
+  await addUserUpload(req.userData.key, -1);
   await delFile(fileName);
   unlinkSync(filePath);
 

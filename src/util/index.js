@@ -1,4 +1,3 @@
-const { createHash } = require('crypto');
 const { getUserFromKey } = require('../mongo/index.js');
 
 module.exports.createKey = async () => {
@@ -13,8 +12,5 @@ module.exports.generateRandomString = length => {
   let charsLength = chars.length;
   let result = '';
   for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * charsLength));
-
   return result;
 };
-
-module.exports.sha256 = str => createHash('sha256').update(str).digest('hex');

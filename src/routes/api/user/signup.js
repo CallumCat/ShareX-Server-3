@@ -1,11 +1,14 @@
 /*
     The router for user sign up
 */
+const config = require('../../../config.json');
+
 const { Router, json, urlencoded } = require('express');
 
 const { saveUser, getUserFromName } = require('../../../mongo');
 const { userAPIPOST } = require('../../../util/logger');
-const { sha256, createKey } = require('../../../util');
+const { hash } = require('bcrypt');
+const { createKey } = require('../../../util');
 
 const router = Router();
 
@@ -32,7 +35,7 @@ router.post('/', async (req, res) => {
   let userCheck = await getUserFromName(username);
   if (userCheck) return res.redirect('/signup?error=User with that username already exists');
 
-  password = sha256(password);
+  password = await hash(password, 13);
 
   let userObject = {
     key: await createKey(),
@@ -43,9 +46,10 @@ router.post('/', async (req, res) => {
     redirects: 0,
     discord: 'none',
     id: Math.floor(Math.random() * 10000000),
+    uploadSize: 0,
     createdAt: new Date(),
-    subdomain: 'none',
-    domain: 'none',
+    subdomain: username,
+    domain: config.domain,
   };
 
   let userData = await saveUser(userObject);

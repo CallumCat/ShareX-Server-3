@@ -16,14 +16,15 @@ const router = Router();
 
 const { auth } = require('../../middleware/authentication.js');
 
-// const rateLimit = require('express-rate-limit');
-// const limiter = rateLimit({
-//   windowMs: 10 * 60 * 1000,
-//   max: 25,
-// });
-// router.use(limiter);
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 25,
+});
+router.use(limiter);
 
 let userStorageTypes = {
+  bad: 1 * 1024 * 1024,
   default: 5 * 1024 * 1024,
   friend: 25 * 1024 * 1024,
   staff: 25 * 1024 * 1024,
@@ -34,9 +35,9 @@ let userStorageTypes = {
 const fileUpload = require('express-fileupload');
 router.use(fileUpload({
   limits: {
-    fileSize: Infinity, // Max file size in bytes
+    fileSize: Infinity,
   },
-  useTempFiles: true
+  useTempFiles: true,
 }));
 
 const createFileName = (fileExt, loc) => {
@@ -53,7 +54,8 @@ router.post('/', auth, (req, res) => {
   if (req.userData.uploadSize + (req.files.file.size / 1024) > userStorageTypes[req.userData.userType])
     return res.json({
       error: `You do not have enough space left. Need: ${Math.round((req.userData.uploadSize +
-        (req.files.file.size / 1024)) * 100) / 100}kb Have: ${Math.round((userStorageTypes[req.userData.userType] - req.userData.uploadSize) * 100) / 100}kb`
+        (req.files.file.size / 1024)) * 100) / 100}kb Have: ${Math.round((userStorageTypes[req.userData.userType] -
+           req.userData.uploadSize) * 100) / 100}kb`,
     });
 
   saveFileFunction(req.userData, req.files.file, false, req, res);

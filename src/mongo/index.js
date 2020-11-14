@@ -97,10 +97,11 @@ module.exports.setUserSubDomain = async (key, subdomain) => {
   return true;
 };
 
-module.exports.addUserUpload = async key => {
+module.exports.addUserUpload = async (key, num) => {
+  if (num === undefined) num = 1;
   let userData = await this.getUserFromKey(key);
   if (!userData) return null;
-  let newUploads = userData.uploads + 1;
+  let newUploads = userData.uploads + num;
   await UserModel.updateOne(userData, { uploads: newUploads });
   return true;
 };
