@@ -1,11 +1,11 @@
 /*
     The router for creating a short url
 */
-const { mainURL } = require('../../config.json');
+const { secure, domain, subdomain } = require('../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
-const { saveURL, getURL } = require('../../mongo');
+const { saveURL, getURL, addUserRedirect } = require('../../mongo');
 const { urlAPIGET, urlPOST } = require('../../util/logger');
 const { generateRandomString } = require('../../util');
 const { auth } = require('../../middleware/authentication.js');
@@ -41,13 +41,13 @@ router.get('/:id', auth, async (req, res) => {
     error: 'URL not found.',
   });
 
-  if (urlData.uploader !== req.userData.name && req.userData.owner !== true) return res.status(401).json({
-    error: 'You do not have access.',
+  if (urlData.uploader !== req.userData.name && req.userData.userType !== 'owner') return res.status(401).json({
+    error: 'You do not have access.'
   });
 
   let returnObj = {
     id: urlData.id,
-    link: `${mainURL}/url/${urlData.id}`,
+    link: `${secure ? 'https://' : 'http://'}${subdomain ? `${subdomain}.` : ''}${domain}/url/${urlData.id}`,
     views: urlData.views,
     uploader: urlData.uploader,
     redirect: urlData.redirect,
@@ -67,6 +67,7 @@ router.post('/', auth, async (req, res) => {
 
   let redirectNum = await CreateUrl(10);
 
+  await addUserRedirect(req.userData.key);
   await saveURL({
     id: redirectNum,
     views: 0,
@@ -75,14 +76,15 @@ router.post('/', auth, async (req, res) => {
     CreatedAt: new Date(),
   });
 
-  let urlPart = req.userData.domain === undefined || req.userData.domain === 'none' ?
-    mainURL : req.userData.subdomain === undefined || req.userData.subdomain === 'none' ?
-      mainURL : `https://${req.userData.subdomain}.${req.userData.domain}`;
+  let protocol = secure ? 'https://' : 'http://';
+  let lSubdomain = req.userData.subdomain === 'none' ? subdomain ? subdomain + '.' : '' : req.userData.subdomain + '.';
+  let lDomain = req.userData.domain === 'none' ? domain : req.userData.domain;
+  let linkPart = `${protocol}${lSubdomain}${lDomain}`;
 
   urlPOST(url, req.ip, req.userData.key);
 
   res.setHeader('Content-Type', 'application/json');
-  return res.status(200).end(`${urlPart}/url/${redirectNum}`);
+  return res.status(200).end(`${linkPart}/url/${redirectNum}`);
 });
 
 module.exports = router;

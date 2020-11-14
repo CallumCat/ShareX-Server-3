@@ -31,6 +31,11 @@ router.get('/:name', auth, async (req, res) => {
     error: 'File not found.',
   });
 
+  if (fileData.uploader !== req.userData.id || req.userData.userType !== 'owner')
+    return res.status(401).json({
+      error: 'You do not have access.',
+    });
+
   let returnObj = {
     name: fileData.originalName,
     path: fileData.path,

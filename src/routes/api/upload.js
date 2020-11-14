@@ -55,7 +55,7 @@ router.post('/', auth, (req, res) => {
     return res.json({
       error: `You do not have enough space left. Need: ${Math.round((req.userData.uploadSize +
         (req.files.file.size / 1024)) * 100) / 100}kb Have: ${Math.round((userStorageTypes[req.userData.userType] -
-           req.userData.uploadSize) * 100) / 100}kb`,
+          req.userData.uploadSize) * 100) / 100}kb`,
     });
 
   saveFileFunction(req.userData, req.files.file, false, req, res);
@@ -106,8 +106,8 @@ const saveFileFunction = (userData, file, browser, req, res) => {
     });
 
     let protocol = secure ? 'https://' : 'http://';
-    let lSubdomain = userData.subdomain === undefined || userData.subdomain === 'none' ? subdomain : userData.subdomain;
-    let lDomain = userData.domain === undefined || userData.domain === 'none' ? domain : userData.domain;
+    let lSubdomain = userData.subdomain === 'none' ? subdomain : userData.subdomain;
+    let lDomain = userData.domain === 'none' ? domain : userData.domain;
     let linkPart = `${protocol + lSubdomain}.${lDomain}`;
 
     let url = `${linkPart}/files/${name}`;

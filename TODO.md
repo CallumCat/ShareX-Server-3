@@ -5,3 +5,5 @@
 2. css update for pages
 
 3. file storage in nodes
+
+4. change all Sync() to not Sync()

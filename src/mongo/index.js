@@ -109,8 +109,8 @@ module.exports.addUserUpload = async (key, num) => {
 module.exports.addUserRedirect = async key => {
   let userData = await this.getUserFromKey(key);
   if (!userData) return null;
-  let newRedirect = userData.redirect + 1;
-  await UserModel.updateOne(userData, { redirect: newRedirect });
+  let newRedirect = userData.redirects + 1;
+  await UserModel.updateOne(userData, { redirects: newRedirect });
   return true;
 };
 

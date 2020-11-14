@@ -8,7 +8,8 @@ const { delFile, addUserUpload, setUserPassword, setUserUsername,
 const { browserAuth } = require('../../../middleware/authentication');
 const { compare, hash } = require('bcrypt');
 const { resolve } = require('path');
-const { unlinkSync, existsSync } = require('fs');
+const { log } = require('../../../util/logger');
+const { unlinkSync, existsSync, unlink } = require('fs');
 
 const router = Router();
 
@@ -104,7 +105,7 @@ router.post('/delete/account', browserAuth, async (req, res) => {
     let filePath = resolve(`${__dirname}/../../../../${e.path}`);
     await delFile(e.name);
     if (existsSync(filePath))
-      unlinkSync(filePath);
+      unlinkSync(filePath)
   });
 
   // Delete a user folder as well soon

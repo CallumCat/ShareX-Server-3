@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
     uploadSize: 0,
     createdAt: new Date(),
     subdomain: username,
-    domain: config.domain,
+    domain: 'none',
   };
 
   let userData = await saveUser(userObject);

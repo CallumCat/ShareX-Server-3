@@ -24,9 +24,10 @@ router.get('/', auth, (req, res) => {
     uploads: req.userData.uploads,
     redirects: req.userData.redirects,
     id: req.userData.id,
-    createdAt: new Date(req.userData.createdAt).toLocaleString(),
+    created_at: new Date(req.userData.createdAt).toLocaleString(),
     subdomain: req.userData.subdomain,
     domain: req.userData.subdomain,
+    user_type: req.userData.userType
   };
 
   userAPIGET(req.userData.name, req.userData.key, req.ip);
