@@ -116,7 +116,7 @@ const saveFileFunction = (userData, file, browser, req, res) => {
     await addUserUploadSize(userData.key, file.size / 1024);
 
     res.setHeader('Content-Type', 'application/json');
-    if (browser) res.status(200).redirect(`/upload${userData.id === 'public' ? '/public' : ''}?success=${url}`);
+    if (browser) res.status(200).redirect(`/upload?success=${url}`);
     else res.status(200).end(url);
 
     let fileFunction = fileFunctionMap.get(fileExt);

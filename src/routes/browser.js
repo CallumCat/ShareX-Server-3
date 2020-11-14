@@ -45,13 +45,6 @@ router.get('/files', browserAuth, async (req, res) => {
   return res.status(200).render('pages/files.ejs', { user: req.userData, files: fileData, page: p });
 });
 
-router.get('/upload/public', async (req, res) => {
-  let userData = await getUserFromKey(req.cookies.authentication);
-  res.status(200).render('pages/publicupload.ejs', {
-    user: userData, error: req.query.error, success: req.query.success,
-  });
-});
-
 router.get('/upload', browserAuth, (req, res) => res.status(200).render('pages/upload.ejs', {
   user: req.userData, error: req.query.error, success: req.query.success,
 }));

@@ -9,7 +9,6 @@ const keyNotAllowed = { error: 'You cannot use this key in this endpoint.' };
 async function authentication (req, res, next) {
   let userData;
   if (req.headers.key) {
-    if (req.headers.key === 'public') return res.status(401).json(keyNotAllowed);
     // Get userData from key
     userData = await getUserFromKey(req.headers.key);
     if (userData === null) return res.status(401).json(incorrectKey);
