@@ -106,7 +106,8 @@ a.Link:hover {
 }
 
 .nextPage {
-  border: none;
+  border: 1px;
+  border-color: #4e4d4d;
   border-radius: 5px;
   margin-right: 2px;
   margin-left: 2px;

@@ -40,7 +40,7 @@ router.post('/password', browserAuth, async (req, res) => {
 
 router.post('/username', browserAuth, async (req, res) => {
   let password = req.body.password;
-  let username = req.body.newUsr;
+  let username = req.body.newUsr.toLowerCase();
 
   let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=username&error=Your password was incorrect');

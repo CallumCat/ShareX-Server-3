@@ -23,7 +23,7 @@ const limiter = rateLimit({
 router.use(limiter);
 
 router.post('/', async (req, res) => {
-  let username = req.body.username;
+  let username = req.body.username.toLowerCase();
   let password = req.body.password;
   let passwordCheck = req.body.confirmPassword;
   if (password !== passwordCheck)
