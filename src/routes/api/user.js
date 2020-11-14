@@ -27,7 +27,7 @@ router.get('/', auth, (req, res) => {
     created_at: new Date(req.userData.createdAt).toLocaleString(),
     subdomain: req.userData.subdomain,
     domain: req.userData.subdomain,
-    user_type: req.userData.userType
+    user_type: req.userData.userType,
   };
 
   userAPIGET(req.userData.name, req.userData.key, req.ip);

@@ -42,7 +42,7 @@ router.get('/:id', auth, async (req, res) => {
   });
 
   if (urlData.uploader !== req.userData.name && req.userData.userType !== 'owner') return res.status(401).json({
-    error: 'You do not have access.'
+    error: 'You do not have access.',
   });
 
   let returnObj = {
@@ -77,7 +77,7 @@ router.post('/', auth, async (req, res) => {
   });
 
   let protocol = secure ? 'https://' : 'http://';
-  let lSubdomain = req.userData.subdomain === 'none' ? subdomain ? subdomain + '.' : '' : req.userData.subdomain + '.';
+  let lSubdomain = req.userData.subdomain === 'none' ? subdomain ? `${subdomain}.` : '' : `${req.userData.subdomain}.`;
   let lDomain = req.userData.domain === 'none' ? domain : req.userData.domain;
   let linkPart = `${protocol}${lSubdomain}${lDomain}`;
 

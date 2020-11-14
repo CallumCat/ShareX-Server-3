@@ -4,7 +4,6 @@ const { compare } = require('bcrypt');
 const incorrectKey = { error: 'An incorrect key was provided in the headers.' };
 const incorrectPass = { error: 'An incorrect username or password was provided in the headers.' };
 const noKeyorPass = { error: 'No key nor username or password was provided in the headers.' };
-const keyNotAllowed = { error: 'You cannot use this key in this endpoint.' };
 
 async function authentication (req, res, next) {
   let userData;

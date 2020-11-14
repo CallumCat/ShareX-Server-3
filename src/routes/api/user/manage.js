@@ -6,10 +6,10 @@ const { Router, json, urlencoded } = require('express');
 const { delFile, addUserUpload, setUserPassword, setUserUsername,
   setUserSubDomain, getAllFiles, delUser, addUserUploadSize } = require('../../../mongo');
 const { browserAuth } = require('../../../middleware/authentication');
+
+const { unlinkSync, existsSync } = require('fs');
 const { compare, hash } = require('bcrypt');
 const { resolve } = require('path');
-const { log } = require('../../../util/logger');
-const { unlinkSync, existsSync, unlink } = require('fs');
 
 const router = Router();
 
@@ -105,7 +105,7 @@ router.post('/delete/account', browserAuth, async (req, res) => {
     let filePath = resolve(`${__dirname}/../../../../${e.path}`);
     await delFile(e.name);
     if (existsSync(filePath))
-      unlinkSync(filePath)
+      unlinkSync(filePath);
   });
 
   // Delete a user folder as well soon

@@ -1,8 +1,6 @@
 /*
     The router for user sign up
 */
-const config = require('../../../config.json');
-
 const { Router, json, urlencoded } = require('express');
 
 const { saveUser, getUserFromName } = require('../../../mongo');
