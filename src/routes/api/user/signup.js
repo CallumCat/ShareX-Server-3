@@ -1,6 +1,8 @@
 /*
     The router for user sign up
 */
+const { passwordSaltRounds } = require('../../../config.json')
+
 const { Router, json, urlencoded } = require('express');
 
 const { saveUser, getUserFromName } = require('../../../mongo');
@@ -33,7 +35,7 @@ router.post('/', async (req, res) => {
   let userCheck = await getUserFromName(username);
   if (userCheck) return res.redirect('/signup?error=User with that username already exists');
 
-  password = await hash(password, 13);
+  password = await hash(password, passwordSaltRounds);
 
   let userObject = {
     key: await createKey(),

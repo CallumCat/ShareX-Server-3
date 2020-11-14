@@ -1,6 +1,8 @@
 /*
     The router for user management
 */
+const { passwordSaltRounds } = require('../../../config.json')
+
 const { Router, json, urlencoded } = require('express');
 
 const { delFile, addUserUpload, setUserPassword, setUserUsername,
@@ -34,7 +36,7 @@ router.post('/password', browserAuth, async (req, res) => {
   if (newPass !== newPassCheck)
     return res.redirect('/dashboard?page=password&error=Passwords did not match');
 
-  await setUserPassword(req.userData.key, await hash(newPass, 13));
+  await setUserPassword(req.userData.key, await hash(newPass, passwordSaltRounds));
 
   return res.redirect('/dashboard?page=password&success=Password updated successfully');
 });

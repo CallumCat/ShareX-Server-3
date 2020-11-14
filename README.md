@@ -1,4 +1,4 @@
-# ShareX Server
+# ShareX-Server
 
 ## About
 
@@ -16,14 +16,6 @@ This is a ShareX server that I made.
 
 ---
 
-## TODO
-
-- Comment my code
-
-- frontend
-
----
-
 ## Setup
 
 1. Clone the git repo.
@@ -36,67 +28,20 @@ This is a ShareX server that I made.
 
 ---
 
-## Info
-
-### TODO
-
-* Adding comments to code, to make it easier for other people
-* Add many other databases
-* Make a frontend in vue, ejs, or react (pls help idfk how to do frontend)
-
----
-
 ### Example config.json
 
 ```json
-{  
-  "maxFileSize": 9007199254740991,  
+{
+  "passwordSaltRounds": 13,
   "connectURI": "mongodb://localhost/sharex",  
-  "mainURL": "https://example.com",  
-  "database": "mongo",
+  "subdomain": "example",
+  "domain": "example.com",  
+  "secure": true,
+  "debug": false,
   "mongo": {
     "connectURI": "mongodb://localhost/sharex",
     "connectOptions": {}
   },
-}
-```
-
-### Example ShareX custom uploader
-```json
-{
-  "Version": "13.1.0",
-  "Name": "CUSTOM UPLOADER",
-  "DestinationType": "ImageUploader, TextUploader, FileUploader",
-  "RequestMethod": "POST",
-  "RequestURL": "https://example.com/api/upload",
-  "Headers": {
-    "key": "[KEY]"
-  },
-  "Body": "MultipartFormData",
-  "Arguments": {
-    "fnl": "5"
-  },
-  "FileFormName": "file",
-  "URL": "$response$",
-}
-```
-
-### Example ShareX url shortener
-```json
-{
-  "Version": "13.1.0",
-  "Name": "CUSTOM URL SHORTENER",
-  "DestinationType": "URLShortener, URLSharingService",
-  "RequestMethod": "POST",
-  "RequestURL": "https://example.com/api/url",
-  "Headers": {
-    "key": "[KEY]"
-  },
-  "Body": "MultipartFormData",
-  "Arguments": {
-    "url": "$input$"
-  },
-  "URL": "$response$"
 }
 ```
 
