@@ -49,11 +49,11 @@ setInterval(() => {
   fs.readdir('./tmp', (err, files) => {
     if (err) throw err;
     if (files.length === 0) return;
-    log('Attempting to Delete', files.length, 'Temperary files. Currently:', new Date().toLocaleString());
+    log('Attempting to Delete', files.length, `Temperary file${files.length > 1 ? 's' : ''}. Currently:`, new Date().toLocaleString());
     files.forEach(e => {
       fs.stat(`./tmp/${e}`, (err2, stats) => {
         if (err2) throw err2;
-        if (stats.mtimeMs > 1000 * 60 * 60)
+        if (stats.mtimeMs > Date.now() + 1000 * 60 * 60)
           fs.unlink(`./tmp/${e}`, err3 => {
             if (err3) throw err3;
             warn('Deleted Temperary File:', e);
@@ -61,4 +61,4 @@ setInterval(() => {
       });
     });
   });
-}, 1000 * 60 * 60);
+}, 1000 * 4);
