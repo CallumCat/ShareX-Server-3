@@ -42,6 +42,8 @@ This is a ShareX server that I made.
     "connectURI": "mongodb://localhost/sharex",
     "connectOptions": {}
   },
+  "ipv4": true,
+  "ipv6": true
 }
 ```
 
