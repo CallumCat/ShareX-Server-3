@@ -84,17 +84,17 @@ module.exports.log = (message, ...args) => {
 };
 
 module.exports.warn = (message, ...args) => {
-  let msg = `${'[WARN]'.yellow} ${message.toString().yellow} ${args.length > 0 ? args.join(' ').yellow : ''}`;
+  let msg = `${'[WARN]'.yellow} ${message.toString().white} ${args.length > 0 ? args.join(' ').white : ''}`;
   console.log(msg);
 };
 
 module.exports.error = (message, ...args) => {
-  let msg = `${'[WARN]'.red} ${message.toString().red} ${args.length > 0 ? args.join(' ').red : ''}`;
+  let msg = `${'[ERROR]'.red} ${message.toString().white} ${args.length > 0 ? args.join(' ').white : ''}`;
   console.log(msg);
 };
 
 module.exports.debug = (message, ...args) => {
-  let msg = `${'[DEBUG]'.magenta} ${message.toString().cyan} ${args.length > 0 ? args.join(' ').cyan : ''}`;
+  let msg = `${'[DEBUG]'.magenta} ${message.toString().white} ${args.length > 0 ? args.join(' ').white : ''}`;
   console.log(msg);
 };
 
