@@ -53,7 +53,7 @@ setInterval(() => {
     files.forEach(e => {
       fs.stat(`./tmp/${e}`, (err2, stats) => {
         if (err2) throw err2;
-        if (stats.mtimeMs > Date.now() + 1000 * 60 * 60)
+        if (stats.mtimeMs > Date.now() + (1000 * 60 * 60))
           fs.unlink(`./tmp/${e}`, err3 => {
             if (err3) throw err3;
             warn('Deleted Temperary File:', e);

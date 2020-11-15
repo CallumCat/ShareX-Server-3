@@ -1,7 +1,7 @@
 /*
     The router for user management
 */
-const { passwordSaltRounds } = require('../../../config.json')
+const { passwordSaltRounds } = require('../../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
@@ -39,7 +39,7 @@ router.post('/password', browserAuth, async (req, res) => {
 
   await setUserPassword(req.userData.key, await hash(newPass, passwordSaltRounds));
 
-  userAPIMANAGEPOST('USER UPDATED PASSWORD', req.userData.name, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER UPDATED PASSWORD', req.userData.name, req.userData.key, req.ip);
   return res.redirect('/dashboard?page=password&success=Password updated successfully');
 });
 
@@ -52,7 +52,7 @@ router.post('/username', browserAuth, async (req, res) => {
 
   await setUserUsername(req.userData.key, username);
 
-  userAPIMANAGEPOST('USER CHANGED USERNAME', `${req.userData.name} → ${username}`, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER CHANGED USERNAME', `${req.userData.name} → ${username}`, req.userData.key, req.ip);
   return res.redirect('/dashboard?page=username&success=Username updated successfully');
 });
 
@@ -65,7 +65,7 @@ router.post('/subdomain', browserAuth, async (req, res) => {
 
   await setUserSubDomain(req.userData.key, subdomain);
 
-  userAPIMANAGEPOST('USER CHANGED SUBDOMAIN', req.userData.name, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER CHANGED SUBDOMAIN', req.userData.name, req.userData.key, req.ip);
 
   return res.redirect('/dashboard?page=subdomain&success=Subdomain updated successfully');
 });
@@ -91,7 +91,7 @@ router.post('/delete/files', browserAuth, async (req, res) => {
   await addUserUploadSize(req.userData.key, -req.userData.uploadSize);
   await addUserUpload(req.userData.key, -req.userData.uploads);
 
-  userAPIMANAGEPOST('USER DELETED ALL FILES', req.userData.name, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER DELETED ALL FILES', req.userData.name, req.userData.key, req.ip);
 
   res.redirect('/dashboard?page=files&success=Files successfully deleted');
 });
@@ -121,7 +121,7 @@ router.post('/delete/account', browserAuth, async (req, res) => {
 
   await delUser(req.userData.key);
 
-  userAPIMANAGEPOST('USER DELETED ACCOUNT', req.userData.name, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER DELETED ACCOUNT', req.userData.name, req.userData.key, req.ip);
 
   res.clearCookie('authentication');
   return res.redirect('/home?success=Account and files successfully deleted');

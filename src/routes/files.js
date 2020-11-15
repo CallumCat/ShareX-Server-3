@@ -21,7 +21,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-function addToArray(obj, arr) {
+function addToArray (obj, arr) {
   if (!arr.some(e => e.name === obj.name)) { return arr.push(obj); } else {
     let objNameArray = obj.name.split('.');
     let fileName = objNameArray.slice(0, objNameArray.length - 1).join(' ');

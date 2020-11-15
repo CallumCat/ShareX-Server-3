@@ -10,7 +10,7 @@ const { userAPIPOST } = require('../../../util/logger');
 const { hash } = require('bcrypt');
 const { createKey } = require('../../../util');
 const flake = new (require('flakeid'))({
-    mid : 51,
+  mid: 51,
 });
 
 const router = Router();
