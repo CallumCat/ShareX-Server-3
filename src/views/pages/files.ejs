@@ -35,7 +35,7 @@
         <a class="fileDataA">Uploaded At: <%= new Date(e.UploadedAt).toLocaleString() %></a><br>
         <a class="fileDataA">Views: <%= e.views %></a><br>
         <a class="fileDataA">Link: </a>
-        <a class="Link" title="Go to <%= e.originalName %>" href="<%= user.subdomain %>.<%= user.domain %>/files/<%= e.name %>">Click Here</a><br>
+        <a class="Link" title="Go to <%= e.originalName %>" href="https://<%= user.subdomain %>.<%= user.domain %>/files/<%= e.name %>">Click Here</a><br>
         <a class="fileDataA">Delete Link: </a>
         <a class="Link" title="Delete <%= e.originalName %>" href="/files/delete/<%= e.name %>">Click Here</a><br>
       </div>

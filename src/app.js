@@ -55,7 +55,6 @@ if (config.ipv6)
     .on('close', () => warn('expressjs server running on IPv6 stopped'))
     .on('listening', () => log('expressjs server running on IPv6 and port: '.white + PORT.toString().green));
 
-
 setInterval(() => {
   fs.readdir('./tmp', (err, files) => {
     if (err) throw err;
