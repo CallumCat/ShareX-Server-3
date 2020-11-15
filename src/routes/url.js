@@ -47,9 +47,9 @@ router.get('/delete/:id', browserAuth, async (req, res) => {
 
   delURL(urlID);
 
-  res.status(200).redirect('/?success=Successfully_deleted_the_url_redirect.');
-
   urlDELETE(urlID, req.userData.key, req.ip);
+
+  return res.status(200).redirect('/?success=Successfully_deleted_the_url_redirect.');
 });
 
 module.exports = router;

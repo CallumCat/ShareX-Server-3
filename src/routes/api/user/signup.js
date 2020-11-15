@@ -1,7 +1,7 @@
 /*
     The router for user sign up
 */
-const { passwordSaltRounds } = require('../../../config.json')
+const { passwordSaltRounds } = require('../../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 

@@ -19,6 +19,7 @@ router.use(json());
 router.use(urlencoded({ extended: false }));
 
 const rateLimit = require('express-rate-limit');
+const { userAPIMANAGEPOST } = require('../../../util/logger');
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 8,
@@ -38,6 +39,7 @@ router.post('/password', browserAuth, async (req, res) => {
 
   await setUserPassword(req.userData.key, await hash(newPass, passwordSaltRounds));
 
+  userAPIMANAGEPOST('USER UPDATED PASSWORD', req.userData.name, req.userData.key, req.ip)
   return res.redirect('/dashboard?page=password&success=Password updated successfully');
 });
 
@@ -50,6 +52,7 @@ router.post('/username', browserAuth, async (req, res) => {
 
   await setUserUsername(req.userData.key, username);
 
+  userAPIMANAGEPOST('USER CHANGED USERNAME', req.userData.name, req.userData.key, req.ip)
   return res.redirect('/dashboard?page=username&success=Username updated successfully');
 });
 
@@ -61,6 +64,8 @@ router.post('/subdomain', browserAuth, async (req, res) => {
   if (!userCheck) return res.redirect('/dashboard?page=subdomain&error=Your password was incorrect');
 
   await setUserSubDomain(req.userData.key, subdomain);
+
+  userAPIMANAGEPOST('USER CHANGED SUBDOMAIN', req.userData.name, req.userData.key, req.ip)
 
   return res.redirect('/dashboard?page=subdomain&success=Subdomain updated successfully');
 });
@@ -85,6 +90,8 @@ router.post('/delete/files', browserAuth, async (req, res) => {
 
   await addUserUploadSize(req.userData.key, -req.userData.uploadSize);
   await addUserUpload(req.userData.key, -req.userData.uploads);
+
+  userAPIMANAGEPOST('USER DELETED ALL FILES', req.userData.name, req.userData.key, req.ip)
 
   res.redirect('/dashboard?page=files&success=Files successfully deleted');
 });
@@ -114,8 +121,10 @@ router.post('/delete/account', browserAuth, async (req, res) => {
 
   await delUser(req.userData.key);
 
+  userAPIMANAGEPOST('USER DELETED ACCOUNT', req.userData.name, req.userData.key, req.ip)
+
   res.clearCookie('authentication');
-  res.redirect('/home?success=Account and files successfully deleted');
+  return res.redirect('/home?success=Account and files successfully deleted');
 });
 
 module.exports = router;

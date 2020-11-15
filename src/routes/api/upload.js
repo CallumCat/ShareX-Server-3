@@ -123,6 +123,7 @@ const saveFileFunction = (userData, file, browser, req, res) => {
     if (fileFunction) await fileFunction(uploadDir);
 
     await addUserUpload(userData.key);
+    return;
   });
 };
 

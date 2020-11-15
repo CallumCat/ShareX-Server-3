@@ -21,7 +21,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-function addToArray (obj, arr) {
+function addToArray(obj, arr) {
   if (!arr.some(e => e.name === obj.name)) { return arr.push(obj); } else {
     let objNameArray = obj.name.split('.');
     let fileName = objNameArray.slice(0, objNameArray.length - 1).join(' ');
@@ -88,9 +88,9 @@ router.get('/delete/:name', browserAuth, async (req, res) => {
   await delFile(fileName);
   unlinkSync(filePath);
 
-  res.status(200).redirect('/?success=Successfully deleted the file.');
-
   fileDELETE(fileName, req.userData.key, req.ip);
+
+  return res.status(200).redirect('/?success=Successfully deleted the file.');
 });
 
 module.exports = router;

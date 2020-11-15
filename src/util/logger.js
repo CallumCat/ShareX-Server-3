@@ -72,6 +72,12 @@ module.exports.userAPIPOST = async (name, key, ip) => {
   console.log(msg);
 };
 
+module.exports.userAPIMANAGEPOST = async (type, name, key, ip) => {
+  ip = await parseIP(ip);
+  let msg = `${'[GET]'.cyan} ${type.toString().toUpperCase().bgMagenta.black} ${name.toString().bgBlue.black} ${key.toString().bgYellow.black} ${ip.toString().bgWhite.black}`;
+  console.log(msg);
+};
+
 module.exports.log = (message, ...args) => {
   let msg = `${'[LOG]'.green} ${message.toString().white} ${args.length > 0 ? args.join(' ').white : ''}`;
   console.log(msg);
@@ -93,3 +99,4 @@ module.exports.debug = (message, ...args) => {
 };
 
 let parseIP = async ip => ip.replace('::ffff:', '').replace('::1', '127.0.0.1').replace('localhost', '127.0.0.1');
+module.exports.parseIP = parseIP
