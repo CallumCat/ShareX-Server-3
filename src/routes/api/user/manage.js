@@ -52,7 +52,7 @@ router.post('/username', browserAuth, async (req, res) => {
 
   await setUserUsername(req.userData.key, username);
 
-  userAPIMANAGEPOST('USER CHANGED USERNAME', req.userData.name, req.userData.key, req.ip)
+  userAPIMANAGEPOST('USER CHANGED USERNAME', `${req.userData.name} → ${username}`, req.userData.key, req.ip)
   return res.redirect('/dashboard?page=username&success=Username updated successfully');
 });
 
