@@ -9,6 +9,9 @@ const { saveUser, getUserFromName } = require('../../../mongo');
 const { userAPIPOST } = require('../../../util/logger');
 const { hash } = require('bcrypt');
 const { createKey } = require('../../../util');
+const flake = new (require('flakeid'))({
+    mid : 51,
+});
 
 const router = Router();
 
@@ -45,7 +48,7 @@ router.post('/', async (req, res) => {
     uploads: 0,
     redirects: 0,
     discord: 'none',
-    id: Math.floor(Math.random() * 10000000),
+    id: flake.gen(),
     uploadSize: 0,
     createdAt: new Date(),
     subdomain: username,
