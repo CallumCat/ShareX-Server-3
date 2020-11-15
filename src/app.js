@@ -6,7 +6,7 @@ let PORT = config.port || 1234;
 
 // Fancy stuff
 require('colors');
-const { warn, log } = require('./util/logger');
+const { warn, log, error } = require('./util/logger');
 const fs = require('fs');
 
 const express = require('express');
@@ -41,9 +41,20 @@ app.use(limiter);
 require('./routes').setup(app);
 
 // Start server and log
-app.listen(PORT, () => {
-  console.log('ExpressJS server running on port: '.green + PORT.toString().white);
-});
+// IPv4
+if(config.ipv4) {
+  app.listen(PORT, 'localhost')
+  .on('error', (err)=> error(err))
+  .on('close', () => warn('expressjs server running on IPv4 stopped'))
+  .on('listening', () => log('expressjs server running on IPv4 and port: '.white + PORT.toString().green))
+}
+// IPv6 
+if(config.ipv6) {
+    app.listen(PORT, '::1')
+    .on('error', (err)=> error(err))
+    .on('close', () => warn('expressjs server running on IPv6 stopped'))
+    .on('listening', () => log('expressjs server running on IPv6 and port: '.white + PORT.toString().green))
+}
 
 setInterval(() => {
   fs.readdir('./tmp', (err, files) => {
@@ -62,3 +73,6 @@ setInterval(() => {
     });
   });
 }, 1000 * 60 * 60);
+
+// Gotta Catch em all!
+process.on('uncaughtException', (err) => error(err))
