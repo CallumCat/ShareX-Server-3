@@ -32,28 +32,26 @@ app.set('trust proxy', true);
 // Middleware
 if (config.debug) app.use(require('morgan')('dev'));
 app.use(compression());
+app.use(cookieParser());
 app.use(express.static(`${__dirname}/public/`));
 app.use(express.static(`${__dirname}/uploads/`));
-app.use(cookieParser());
 app.use(limiter);
 
 // Router
 require('./routes').setup(app);
 
 // Start server and log
-// IPv4
 if (config.ipv4)
   app.listen(PORT, 'localhost')
     .on('error', err => error(err))
-    .on('close', () => warn('expressjs server running on IPv4 stopped'))
-    .on('listening', () => log('expressjs server running on IPv4 and port: '.white + PORT.toString().green));
+    .on('close', () => warn('expressjs server running on IPv4 stopped'));
 
-// IPv6
 if (config.ipv6)
   app.listen(PORT, '::1')
     .on('error', err => error(err))
-    .on('close', () => warn('expressjs server running on IPv6 stopped'))
-    .on('listening', () => log('expressjs server running on IPv6 and port: '.white + PORT.toString().green));
+    .on('close', () => warn('expressjs server running on IPv6 stopped'));
+
+log('expressjs server running on port', PORT)
 
 setInterval(() => {
   fs.readdir('./tmp', (err, files) => {
