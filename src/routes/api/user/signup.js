@@ -1,7 +1,7 @@
 /*
     The router for user sign up
 */
-const { passwordSaltRounds } = require('../../../config.json');
+const { passwordSaltRounds, domain } = require('../../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
     uploadSize: 0,
     createdAt: new Date(),
     subdomain: username,
-    domain: 'none',
+    domain: domain,
   };
 
   let userData = await saveUser(userObject);

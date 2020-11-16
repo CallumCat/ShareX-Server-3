@@ -134,6 +134,7 @@ a.Link:hover {
 
 .login {
   background: rgb(49, 49, 49);
+  box-shadow: 2px 5px 9px rgba(0, 0, 0, 0.637);
   width: 400px;
   height: fit-content;
   padding: 10px;
