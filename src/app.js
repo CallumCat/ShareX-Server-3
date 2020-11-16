@@ -42,12 +42,12 @@ require('./routes').setup(app);
 
 // Start server and log
 if (config.ipv4)
-  app.listen(PORT, 'localhost')
+  app.listen(PORT, '0.0.0.0')
     .on('error', err => error(err))
     .on('close', () => warn('expressjs server running on IPv4 stopped'));
 
 if (config.ipv6)
-  app.listen(PORT, '::1')
+  app.listen(PORT, '::')
     .on('error', err => error(err))
     .on('close', () => warn('expressjs server running on IPv6 stopped'));
 

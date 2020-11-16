@@ -45,7 +45,7 @@ router.get('/delete/:id', browserAuth, async (req, res) => {
   if (urlData.uploader !== req.userData.name && !req.userData.owner)
     return res.status(401).redirect('/?error=You_do_not_have_permissions_to_do_this.');
 
-  delURL(urlID);
+  await delURL(urlID);
 
   urlDELETE(urlID, req.userData.key, req.ip);
 

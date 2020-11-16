@@ -20,13 +20,9 @@
   </div>
 
   <% if (error) { %>
-  <div class="errorDiv">
     <a class="error"><%= error %></a>
-  </div>
   <% } else if (success) { %>
-  <div class="successDiv">
     <a class="success" href="<%= success %>"><%= success %></a>
-  </div>
   <% } %>
 
 </body>
