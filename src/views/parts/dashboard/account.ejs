@@ -3,7 +3,7 @@
   <div class="popupBG">
     <div class="dashboardSpace"></div>
     <h1>Delete Account</h1>
-    <div class="login">
+    <div class="form">
       <form action="/api/user/manage/delete/account" method="post">
         <div class="formOption">
           <span id='label'>Username</span>
@@ -23,13 +23,9 @@
         </div>
       </form>
       <% if (error) { %>
-      <div class="errorDiv">
         <a class="error"><%= error %></a>
-      </div>
       <% } else if (success) { %>
-      <div class="successDiv">
         <a class="success"><%= success %></a>
-      </div>
       <% } else { %>
           <a class="error">Deleting your account will delete all of the files. If you want them, download them</a>
             <a href="/files/download" style="text-decoration: underline; color: red">here</a><a class="error"> first.</a>

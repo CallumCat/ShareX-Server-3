@@ -6,7 +6,7 @@ const { passwordSaltRounds } = require('../../../config.json');
 const { Router, json, urlencoded } = require('express');
 
 const { delFile, addUserUpload, setUserPassword, setUserUsername,
-  setUserSubDomain, getAllFiles, delUser, addUserUploadSize } = require('../../../mongo');
+  setUserSubDomain, getAllFiles, delUser, addUserUploadSize, setUserDomain } = require('../../../mongo');
 const { browserAuth } = require('../../../middleware/authentication');
 
 const { unlinkSync, existsSync } = require('fs');
@@ -68,6 +68,20 @@ router.post('/subdomain', browserAuth, async (req, res) => {
   userAPIMANAGEPOST('USER CHANGED SUBDOMAIN', req.userData.name, req.userData.key, req.ip);
 
   return res.redirect('/dashboard?page=subdomain&success=Subdomain updated successfully');
+});
+
+router.post('/domain', browserAuth, async (req, res) => {
+  let password = req.body.password;
+  let domain = req.body.domain;
+
+  let userCheck = await compare(password, req.userData.password);
+  if (!userCheck) return res.redirect('/dashboard?page=subdomain&error=Your password was incorrect');
+
+  await setUserDomain(req.userData.key, domain);
+
+  userAPIMANAGEPOST('USER CHANGED DOMAIN', req.userData.name, req.userData.key, req.ip);
+
+  return res.redirect('/dashboard?page=domain&success=Domain updated successfully');
 });
 
 router.post('/delete/files', browserAuth, async (req, res) => {

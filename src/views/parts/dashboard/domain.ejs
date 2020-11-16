@@ -1,20 +1,16 @@
-<div class="popup pwdForm">
+<div class="popup domainForm">
   <div class="popupBG">
     <div class="dashboardSpace"></div>
-    <h1>Change Password</h1>
+    <h1>Change Domain</h1>
     <div class="form">
-      <form action="/api/user/manage/password" method="post">
+      <form action="/api/user/manage/domain" method="post">
         <div class="formOption">
           <span id='label'>Password</span>
-          <input type="password" name="pwdNow" required />
+          <input type="password" name="password" required />
         </div>
         <div class="formOption">
-          <span id='label'>New Password</span>
-          <input type="password" name="newPwd" required />
-        </div>
-        <div class="formOption">
-          <span id='label'>Confirm New Password</span>
-          <input type="password" name="newPwdCheck" required />
+          <span id='label'>New Domain</span>
+          <input type="text" name="domain" required />
         </div>
         <div class="submit">
           <input type="submit" class="formSubmit" value="Go!">
@@ -24,7 +20,9 @@
         <a class="error"><%= error %></a>
       <% } else if (success) { %>
         <a class="success"><%= success %></a>
-      <% } %>
+      <% } else { %>
+          <a class="error">This domain must be router to this server or the custom domain will not work.</a>
+      <% } %> 
     </div>
   </div>
   <div class="dashboardOption">

@@ -3,7 +3,7 @@
   <div class="popupBG">
     <div class="dashboardSpace"></div>
     <h1>Delete Files</h1>
-    <div class="login">
+    <div class="form">
       <form action="/api/user/manage/delete/files" method="post">
         <div class="formOption">
           <span id='label'>Password</span>
@@ -19,13 +19,9 @@
         </div>
       </form>
       <% if (error) { %>
-      <div class="errorDiv">
         <a class="error"><%= error %></a>
-      </div>
       <% } else if (success) { %>
-      <div class="successDiv">
         <a class="success"><%= success %></a>
-      </div>
       <% } else { %>
         <a class="error">If you want to download your files before you delete them, download them</a>
         <a href="/files/download" style="text-decoration: underline; color: red">here</a><a class="error">.</a>

@@ -2,7 +2,7 @@
   <div class="popupBG">
     <div class="dashboardSpace"></div>
     <h1>Change Username</h1>
-    <div class="login">
+    <div class="form">
       <form action="/api/user/manage/username" method="post">
         <div class="formOption">
           <span id='label'>Password</span>
@@ -17,13 +17,9 @@
         </div>
       </form>
       <% if (error) { %>
-      <div class="errorDiv">
         <a class="error"><%= error %></a>
-      </div>
       <% } else if (success) { %>
-      <div class="successDiv">
         <a class="success"><%= success %></a>
-      </div>
       <% } %>
     </div>
   </div>

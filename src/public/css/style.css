@@ -118,7 +118,7 @@ a.Link:hover {
   margin-left: 10px;
   background: #272727;
   color: white;
-  padding: 4px;
+  padding: 6px;
   text-decoration: none;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.438);
 }
@@ -128,12 +128,12 @@ a.Link:hover {
   background: #202020;
 }
 
-.errorDiv, .error {
+.error {
   color: red;
   margin-top: 30px;
 }
 
-.successDiv, .success {
+.success {
   color: green;
   margin-top: 30px;
 }

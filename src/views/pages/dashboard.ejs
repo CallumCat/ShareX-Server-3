@@ -28,6 +28,8 @@
     <%- include('../parts/dashboard/username.ejs') %>
   <% } else if (page === "subdomain") {%>
     <%- include('../parts/dashboard/subdomain.ejs') %>
+  <% } else if (page === "domain") {%>
+    <%- include('../parts/dashboard/domain.ejs') %>
   <% } %>
 
   <div class="userInfo">
@@ -37,11 +39,11 @@
       </div>
       <div class="user">
         <a>Key: <%= user.key %></a><br>
-        <a>CreatedAt: <%= new Date(user.createdAt).toLocaleString() %></a><br>
+        <a>Date Created: <%= new Date(user.createdAt).toLocaleString() %></a><br>
         <a>Uploads: <%= user.uploads.toString() %></a><br>
         <a>Redirects: <%= user.redirects.toString() %></a><br>
         <a>Domain: <%= user.domain %></a><br>
-        <a>SubDomain: <%= user.subdomain %></a><br>
+        <a>Subdomain: <%= user.subdomain %></a><br>
       </div>
     </div>
     <div class="pages">
@@ -53,6 +55,9 @@
       <a class="nextPage" href="?page=files">Delete All Files</a>
       <a class="nextPage" href="?page=account">Delete Account</a>
       <a class="nextPage" target="_blank" href="/files/download">Download Files</a>
+    </div><br>
+    <div class="pages">
+      <a class="nextPage" href="?page=domain">Change Domain</a>
     </div>
   </div>
   <% if (!page) { %>
