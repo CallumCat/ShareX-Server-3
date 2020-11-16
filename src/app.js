@@ -59,7 +59,6 @@ setInterval(() => {
   fs.readdir('./tmp', (err, files) => {
     if (err) throw err;
     if (files.length === 0) return;
-    log('Attempting to Delete', files.length, `Temperary file${files.length > 1 ? 's' : ''}. Currently:`, new Date().toLocaleString());
     files.forEach(e => {
       fs.stat(`./tmp/${e}`, (err2, stats) => {
         if (err2) throw err2;
