@@ -37,11 +37,13 @@ app.use(express.static(`${__dirname}/public/`));
 app.use(express.static(`${__dirname}/uploads/`));
 app.use(limiter);
 
+app.get('/teapot', (req, res) => res.status(418).end('I\'m a teapot'))
+
 // Router
 require('./routes').setup(app);
 
 // Start server and log
-app.listen(PORT, '0.0.0.0')
+app.listen(PORT)
   .on('error', err => error(err))
   .on('close', () => warn('expressjs server running on IPv4 stopped'))
   .on('listening', () => log('expressjs server running on port', PORT));

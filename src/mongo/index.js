@@ -68,6 +68,7 @@ module.exports.delURL = async ID => {
 // ------------------------------------------------------------
 
 let UserModel = require('./models/user.js');
+const { error, log } = require('../util/logger');
 
 module.exports.setUserUsername = async (key, username) => {
   let userData = await this.getUserFromKey(key);
@@ -187,11 +188,19 @@ const defaultOptions = {
 
 module.exports.init = () => {
   if (!config || !config.mongo ||
-    !config.mongo.connectURI || !config.mongo.connectOptions) throw new Error('Incorrect config setup.');
+    !config.mongo.connectURI || !config.mongo.connectOptions) {
+      error("MongoDB config is required.")
+      process.exit()
+    }
 
   let connectURI = config.mongo.connectURI;
   let connectOptions = Object.assign({}, config.mongo.connectOptions, defaultOptions);
-  mongoose.connect(connectURI, connectOptions);
+  mongoose.connect(connectURI, connectOptions, (err) => {
+    if (err) {
+      error(err)
+      this.init()
+    } else log('Connected to MongoDB!')
+  });
 };
 
 // ------------------------------------------------------------
