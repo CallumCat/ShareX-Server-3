@@ -46,22 +46,5 @@ app.listen(PORT, '0.0.0.0')
   .on('close', () => warn('expressjs server running on IPv4 stopped'))
   .on('listening', () => log('expressjs server running on port', PORT));
 
-setInterval(() => {
-  fs.readdir('./tmp', (err, files) => {
-    if (err) throw err;
-    if (files.length === 0) return;
-    files.forEach(e => {
-      fs.stat(`./tmp/${e}`, (err2, stats) => {
-        if (err2) throw err2;
-        if (stats.mtimeMs > Date.now() + (1000 * 60 * 60))
-          fs.unlink(`./tmp/${e}`, err3 => {
-            if (err3) throw err3;
-            warn('Deleted Temperary File:', e);
-          });
-      });
-    });
-  });
-}, 1000 * 60 * 60);
-
 // Gotta Catch em all!
 process.on('uncaughtException', err => error(err));

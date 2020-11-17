@@ -6,7 +6,7 @@ const { passwordSaltRounds } = require('../../../config.json');
 const { Router, json, urlencoded } = require('express');
 
 const { delFile, addUserUpload, setUserPassword, setUserUsername,
-  setUserSubDomain, getAllFiles, delUser, addUserUploadSize, setUserDomain } = require('../../../mongo');
+  setUserSubDomain, getAllFiles, delUser, addUserUploadSize, setUserDomain, getUserFromSubDomain } = require('../../../mongo');
 const { browserAuth } = require('../../../middleware/authentication');
 
 const { unlinkSync, existsSync } = require('fs');
@@ -62,6 +62,9 @@ router.post('/subdomain', browserAuth, async (req, res) => {
 
   let userCheck = await compare(password, req.userData.password);
   if (!userCheck) return res.redirect('/dashboard?page=subdomain&error=Your password was incorrect');
+
+  let user2ndCheck = getUserFromSubDomain(subdomain)
+  if(user2ndCheck) return res.redirect('/dashboard?page=subdomain&error=This subdomain is already taken, please choose another one.')
 
   await setUserSubDomain(req.userData.key, subdomain);
 

@@ -1,7 +1,7 @@
 /*
     The router for user sign up
 */
-const { passwordSaltRounds, domain } = require('../../../config.json');
+const { passwordSaltRounds, domain, flakeMID } = require('../../../config.json');
 
 const { Router, json, urlencoded } = require('express');
 
@@ -10,7 +10,7 @@ const { userAPIPOST } = require('../../../util/logger');
 const { hash } = require('bcrypt');
 const { createKey } = require('../../../util');
 const flake = new (require('flakeid'))({
-  mid: 51,
+  mid: flakeMID,
 });
 
 const router = Router();
