@@ -45,7 +45,7 @@ require('./routes').setup(app);
 // Start server and log
 app.listen(PORT)
   .on('error', err => error(err))
-  .on('close', () => warn('expressjs server running on IPv4 stopped'))
+  .on('close', () => warn('expressjs server stopped.'))
   .on('listening', () => log('expressjs server running on port', PORT));
 
 // Gotta Catch em all!
