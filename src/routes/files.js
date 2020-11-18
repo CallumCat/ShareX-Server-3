@@ -58,9 +58,9 @@ router.get('/:name', async (req, res) => {
   let filePath = resolve(`${__dirname}/../../${fileData.path}`);
   if (!existsSync(filePath)) return res.status(200).render('pages/404.ejs', { user: null, error: 'File Not Found', success: null });
 
-  if (!await isFileUtf8(filePath)) return res.sendFile(filePath);
-
   fileGET(fileName, req.ip);
+  
+  if (!await isFileUtf8(filePath)) return res.sendFile(filePath);
 
   let data = readFileSync(filePath, 'utf8');
 
